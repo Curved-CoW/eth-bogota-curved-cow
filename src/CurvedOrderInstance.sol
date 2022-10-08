@@ -37,7 +37,7 @@ contract CurvedOrderInstance is EIP1271Verifier {
     }
 
     function decode(bytes calldata _payload)
-        internal
+        public
         pure
         returns (GPv2Order.Data memory _gpv2Order, CurvedOrder.Data memory _curvedOrder, bytes32 _curvedOrderSignature)
     {

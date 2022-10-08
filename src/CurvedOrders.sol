@@ -17,8 +17,6 @@ contract CurvedOrders is ICoWSwapOnchainOrders {
     ICoWSwapSettlement public immutable settlement;
     bytes32 public immutable domainSeparator;
 
-    bytes32 public constant APP_DATA = keccak256("CurvedOrdersV1");
-
     constructor(ICoWSwapSettlement settlement_) {
         settlement = settlement_;
         domainSeparator = settlement_.domainSeparator();
@@ -31,7 +29,6 @@ contract CurvedOrders is ICoWSwapOnchainOrders {
         // todo validate orders have matching fields
 
         bytes32 gpv2OrderHash = gpv2Order.hash(domainSeparator);
-        console.log("hi");
 
         CurvedOrderInstance instance = new CurvedOrderInstance{salt: salt}(
             msg.sender,
@@ -39,18 +36,17 @@ contract CurvedOrders is ICoWSwapOnchainOrders {
             settlement
         );
 
-        console.log("hello");
-
         curvedOrder.sellToken.transferFrom(msg.sender, address(instance), gpv2Order.sellAmount + gpv2Order.feeAmount);
 
-console.log("sup");
         OnchainSignature memory signature =
             OnchainSignature({scheme: ICoWSwapOnchainOrders.OnchainSigningScheme.Eip1271, data: hex""});
 
         emit OrderPlacement(address(instance), gpv2Order, signature, abi.encode(curvedOrder));
 
         orderUid = new bytes(GPv2Order.UID_LENGTH);
+
         orderUid.packOrderUidParams(gpv2OrderHash, address(instance), gpv2Order.validTo);
+
         return (orderUid, address(instance));
     }
 

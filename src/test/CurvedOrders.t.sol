@@ -68,8 +68,6 @@ contract CurvedOrdersTest is DSTest {
     assertTrue(false);
   }
 
-
-
   function test_creates_curved_order() public {
     uint256[] memory sellAmounts = _sell_amount();
     uint256[] memory buyAmounts = _buy_amount();
@@ -80,7 +78,7 @@ contract CurvedOrdersTest is DSTest {
     );
 
     assertEq(orderUId.length, 56);
-    assertEq(orderInstance, address(0xedEC6Bb3f5BcE3fdf865D9d54E0E6A2Bd3F3A19F));
+    assertEq(abi.encodePacked(address(orderInstance)).length, 20);
 
   }
 
@@ -102,6 +100,7 @@ contract CurvedOrdersTest is DSTest {
 
   function _gpv2_order(uint256 sellAmount, uint256 buyAmount)
     internal
+    view
     returns (GPv2Order.Data memory)
   {
     return
