@@ -41,6 +41,15 @@ contract CurvedOrdersTest is DSTest {
         assertEq(address(orders), address(orders));
     }
 
+
+    function test_generate_payload_v1() public {
+        assertTrue(false);
+    }
+
+    function test_generate_payload_v2() public {
+        assertTrue(false);
+    }
+
     function test_creates_curved_order() public {
         assertTrue(false);
     }
@@ -53,11 +62,7 @@ contract CurvedOrdersTest is DSTest {
         assertTrue(false);
     }
 
-    function test_generate_payload_v1() public {
-        assertTrue(false);
-    }
-
-    function test_generate_payload_v2() public {
+    function test_placing_order_emits_event() public {
         assertTrue(false);
     }
 }
