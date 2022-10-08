@@ -75,7 +75,6 @@ contract ContractTest is DSTest {
             sellAmount: sellAmount,
             buyAmount: buyAmount,
             validTo: 500,
-            feeAmount: 671,
             sellTokenBalance: BALANCE_ERC20,
             buyTokenBalance: BALANCE_ERC20
         });
@@ -166,7 +165,6 @@ contract ContractTest is DSTest {
             sellAmount: sellAmount,
             buyAmount: buyAmount,
             validTo: 500,
-            feeAmount: 0,
             sellTokenBalance: BALANCE_ERC20,
             buyTokenBalance: BALANCE_ERC20
         });

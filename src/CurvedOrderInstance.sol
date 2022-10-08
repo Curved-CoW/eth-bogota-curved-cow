@@ -7,7 +7,6 @@ import "./libraries/CurvedOrder.sol";
 import "./libraries/GPv2Order.sol";
 import "./interfaces/IERC20.sol";
 import { GPv2EIP1271 } from "./interfaces/ERC1271.sol";
-import "./interfaces/ICowSwapOnChainOrders.sol";
 import "./interfaces/ICoWSwapSettlement.sol";
 
 contract CurvedOrderInstance is EIP1271Verifier {

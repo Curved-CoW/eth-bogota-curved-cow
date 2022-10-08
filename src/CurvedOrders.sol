@@ -6,22 +6,54 @@ import "./interfaces/ERC1271.sol";
 import "./libraries/CurvedOrder.sol";
 import "./libraries/GPv2Order.sol";
 import "./interfaces/IERC20.sol";
-import "./interfaces/ICowSwapOnChainOrders.sol";
+import {ICoWSwapOnchainOrders} from  "./interfaces/ICoWSwapOnChainOrders.sol";
+import "./CurvedOrderInstance.sol";
 import "./interfaces/ICoWSwapSettlement.sol";
 
-contract CurvedOrders  {
+contract CurvedOrders is ICoWSwapOnchainOrders  {
+  using GPv2Order for *;
   ICoWSwapSettlement public immutable settlement;
   bytes32 public immutable domainSeparator;
+
+  bytes32 constant public APP_DATA = keccak256("CurvedOrdersV1");
 
   constructor(ICoWSwapSettlement settlement_) {
     settlement = settlement_;
     domainSeparator = settlement_.domainSeparator();
   }
 
-  function placeOrder() external {
-    
-  }
+   function placeOrder(
+        GPv2Order.Data calldata gpv2Order,
+        CurvedOrder.Data calldata curvedOrder,
+        bytes32 salt
+    ) external returns (bytes memory orderUid) {
+        
+        // todo validate orders have matching fields
 
+        bytes32 gpv2OrderHash = gpv2Order.hash(domainSeparator);
+
+        CurvedOrderInstance instance = new CurvedOrderInstance{salt: salt}(
+            msg.sender,
+            curvedOrder.sellToken,
+            settlement
+        );
+
+        curvedOrder.sellToken.transferFrom(
+            msg.sender,
+            address(instance),
+            gpv2Order.sellAmount + gpv2Order.feeAmount
+        );
+
+        OnchainSignature memory signature = OnchainSignature({
+            scheme: ICoWSwapOnchainOrders.OnchainSigningScheme.Eip1271,
+            data: hex""
+        });
+
+        emit OrderPlacement(address(instance), gpv2Order, signature,curvedOrder);
+
+        orderUid = new bytes(GPv2Order.UID_LENGTH);
+        orderUid.packOrderUidParams(gpv2OrderHash, address(instance), gpv2Order.validTo);
+    }
 
   /**
    * @notice generateSignature is a helper method used by solver to generate a signature to attach to GPv2Trade

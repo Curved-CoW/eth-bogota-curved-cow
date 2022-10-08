@@ -12,7 +12,6 @@ library CurvedOrder {
         uint256[] sellAmount;
         uint256[] buyAmount;
         uint32 validTo;
-        uint256 feeAmount;
         bytes32 sellTokenBalance;
         bytes32 buyTokenBalance;
     }
