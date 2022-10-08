@@ -54,7 +54,7 @@ contract CurvedOrderInstance is EIP1271Verifier {
     function generateSignature(
         GPv2Order.Data calldata _gpv2Order,
         CurvedOrder.Data calldata _curvedOrder,
-        bytes32 _curvedOrderSignature
+        bytes calldata _curvedOrderSignature
     ) external view returns (bytes memory signature) {
         bytes memory encodedCurvedOrder = abi.encode(_gpv2Order, _curvedOrder, _curvedOrderSignature);
         signature = abi.encodePacked(address(this), encodedCurvedOrder);

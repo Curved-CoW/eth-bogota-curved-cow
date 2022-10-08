@@ -80,7 +80,7 @@ contract CurvedOrdersTest is DSTest {
     );
 
     assertEq(orderUId.length, 56);
-    assertEq(orderInstance, address(0xaf3Cc770Aa8a111a4B2e1db9D06C0E2d2E595816));
+    assertEq(orderInstance, address(0xedEC6Bb3f5BcE3fdf865D9d54E0E6A2Bd3F3A19F));
 
   }
 
