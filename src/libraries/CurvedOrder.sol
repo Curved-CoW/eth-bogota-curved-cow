@@ -17,11 +17,7 @@ library CurvedOrder {
         bytes32 buyTokenBalance;
     }
 
-    function findMinIndexGT(uint256[] calldata arr, uint256 tgt)
-        public
-        pure
-        returns (uint256 index)
-    {
+    function findMinIndexGT(uint256[] calldata arr, uint256 tgt) public pure returns (uint256 index) {
         bool found = false;
         for (uint256 i = 0; i < arr.length; i++) {
             if (arr[i] >= tgt) {
@@ -40,53 +36,33 @@ library CurvedOrder {
     ) public pure returns (bool) {
         // (x'-x)(b-y) >= (a-x)(y'-y)
         // TODO Safemath??
-        if ( executedPoint[1] < leftBreakpoint[1] ){
+        if (executedPoint[1] < leftBreakpoint[1]) {
             return false;
         }
 
-        return
-            (rightBreakpoint[0] - leftBreakpoint[0]) *
-                (executedPoint[1] - leftBreakpoint[1]) >=
-            (executedPoint[0] - leftBreakpoint[0]) *
-                (rightBreakpoint[1] - leftBreakpoint[1]);
+        return (rightBreakpoint[0] - leftBreakpoint[0]) * (executedPoint[1] - leftBreakpoint[1])
+            >= (executedPoint[0] - leftBreakpoint[0]) * (rightBreakpoint[1] - leftBreakpoint[1]);
     }
 
-
-
     // Note: we assume that the list of breakpoints is ordered
-    function executionAboveCurve(
-        GPv2Order.Data calldata executedOrder,
-        CurvedOrder.Data calldata curvedOrder
-    ) public pure returns (bool aboveCurve) {
+    function executionAboveCurve(GPv2Order.Data calldata executedOrder, CurvedOrder.Data calldata curvedOrder)
+        public
+        pure
+        returns (bool aboveCurve)
+    {
         // find first index with curve sell amount >= executed sell amount (if any)
-        uint256 rightIndex = findMinIndexGT(
-            curvedOrder.sellAmount,
-            executedOrder.sellAmount
-        );
-        uint256[2] memory rightBreakpoint = [
-            curvedOrder.sellAmount[rightIndex],
-            curvedOrder.buyAmount[rightIndex]
-        ];
+        uint256 rightIndex = findMinIndexGT(curvedOrder.sellAmount, executedOrder.sellAmount);
+        uint256[2] memory rightBreakpoint = [curvedOrder.sellAmount[rightIndex], curvedOrder.buyAmount[rightIndex]];
 
         // DESIGN CHOICE?
         // The point [0,0] is included by convention (could be thought of as occuping index -1)
         uint256[2] memory leftBreakpoint = [uint256(0), uint256(0)];
         if (rightIndex > 0) {
-            leftBreakpoint = [
-                curvedOrder.sellAmount[rightIndex - 1],
-                curvedOrder.buyAmount[rightIndex - 1]
-            ];
+            leftBreakpoint = [curvedOrder.sellAmount[rightIndex - 1], curvedOrder.buyAmount[rightIndex - 1]];
         }
 
-        uint256[2] memory executedPoint = [
-            executedOrder.sellAmount,
-            executedOrder.buyAmount
-        ];
+        uint256[2] memory executedPoint = [executedOrder.sellAmount, executedOrder.buyAmount];
 
-        aboveCurve = pointAboveLineSegment(
-            executedPoint,
-            leftBreakpoint,
-            rightBreakpoint
-        );
+        aboveCurve = pointAboveLineSegment(executedPoint, leftBreakpoint, rightBreakpoint);
     }
 }

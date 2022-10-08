@@ -17,10 +17,8 @@ contract ContractTest is DSTest {
     address constant SELL_TOKEN = address(uint160(0x13372));
     address constant VERIFIER = 0x0000000000000000000000000000000000000001;
     address constant RECEIVER = 0x0000000000000000000000000000000000000002;
-    bytes32 constant BALANCE_ERC20 =
-        hex"5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9";
-    bytes32 constant KIND_SELL =
-        hex"f3b277728b3fee749481eb3e0b3b48980dbbab78658fc419025cb16eee346775";
+    bytes32 constant BALANCE_ERC20 = hex"5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9";
+    bytes32 constant KIND_SELL = hex"f3b277728b3fee749481eb3e0b3b48980dbbab78658fc419025cb16eee346775";
 
     Utilities internal utils;
     address payable[] internal users;
@@ -30,11 +28,7 @@ contract ContractTest is DSTest {
         users = utils.createUsers(5);
     }
 
-    function _create_gpv2_order()
-        internal
-        view
-        returns (GPv2Order.Data memory order)
-    {
+    function _create_gpv2_order() internal view returns (GPv2Order.Data memory order) {
         order = GPv2Order.Data({
             sellToken: IERC20(SELL_TOKEN),
             buyToken: IERC20(BUY_TOKEN),
@@ -65,11 +59,7 @@ contract ContractTest is DSTest {
         return buyAmount;
     }
 
-    function _create_curved_order()
-        internal
-        pure
-        returns (CurvedOrder.Data memory curvedOrder)
-    {
+    function _create_curved_order() internal pure returns (CurvedOrder.Data memory curvedOrder) {
         uint256[] memory sellAmount = new uint256[](2);
         uint256[] memory buyAmount = new uint256[](2);
 
@@ -91,45 +81,26 @@ contract ContractTest is DSTest {
         });
     }
 
-    function _create_signature_v1()
-        internal
-        view
-        returns (bytes memory signature)
-    {
+    function _create_signature_v1() internal view returns (bytes memory signature) {
         address verifier = VERIFIER;
         bytes memory encodedOrder = abi.encode(_create_curved_order());
         signature = abi.encodePacked(verifier, encodedOrder);
         console.logBytes(signature);
     }
 
-    function _create_signature_v2()
-        internal
-        view
-        returns (bytes memory signature)
-    {
+    function _create_signature_v2() internal view returns (bytes memory signature) {
         address verifier = VERIFIER;
         bytes32 curvedOrderSignature;
-        bytes memory encodedCurvedOrder = abi.encode(
-            _create_gpv2_order(),
-            _create_curved_order(),
-            curvedOrderSignature
-        );
+        bytes memory encodedCurvedOrder = abi.encode(_create_gpv2_order(), _create_curved_order(), curvedOrderSignature);
         signature = abi.encodePacked(verifier, encodedCurvedOrder);
     }
 
     function test_signature_v2_decodes() public {
         bytes memory signature = _create_signature_v2();
-        (address verifier, bytes memory encodedSignature) = this
-            ._extract_verifier_from_bytes(signature);
+        (address verifier, bytes memory encodedSignature) = this._extract_verifier_from_bytes(signature);
 
-        (
-            GPv2Order.Data memory gpv2Order,
-            CurvedOrder.Data memory curvedOrder,
-            bytes32 curvedOrderSignature
-        ) = abi.decode(
-                encodedSignature,
-                (GPv2Order.Data, CurvedOrder.Data, bytes32)
-            );
+        (GPv2Order.Data memory gpv2Order, CurvedOrder.Data memory curvedOrder, bytes32 curvedOrderSignature) =
+            abi.decode(encodedSignature, (GPv2Order.Data, CurvedOrder.Data, bytes32));
 
         assertEq(verifier, VERIFIER);
         __assert_curved_order(curvedOrder);
@@ -137,9 +108,7 @@ contract ContractTest is DSTest {
         __assert_curved_order_signature(curvedOrderSignature);
     }
 
-    function __assert_curved_order_signature(bytes32 curvedOrderSignature)
-        internal
-    {
+    function __assert_curved_order_signature(bytes32 curvedOrderSignature) internal {
         assertEq(curvedOrderSignature, bytes32(0x0));
     }
 
@@ -163,13 +132,9 @@ contract ContractTest is DSTest {
 
     function test_signature_v1_decodes() public {
         bytes memory signature = _create_signature_v1();
-        (address verifier, bytes memory encodedSignature) = this
-            ._extract_verifier_from_bytes(signature);
+        (address verifier, bytes memory encodedSignature) = this._extract_verifier_from_bytes(signature);
 
-        CurvedOrder.Data memory order = abi.decode(
-            encodedSignature,
-            (CurvedOrder.Data)
-        );
+        CurvedOrder.Data memory order = abi.decode(encodedSignature, (CurvedOrder.Data));
 
         assertEq(verifier, VERIFIER);
         __assert_curved_order(order);
@@ -189,10 +154,11 @@ contract ContractTest is DSTest {
     }
 
     // TODO  double check: feeAmount is additive
-    function _create_curved_order_from_amounts(
-        uint256[] memory sellAmount,
-        uint256[] memory buyAmount
-    ) internal pure returns (CurvedOrder.Data memory curvedOrder) {
+    function _create_curved_order_from_amounts(uint256[] memory sellAmount, uint256[] memory buyAmount)
+        internal
+        pure
+        returns (CurvedOrder.Data memory curvedOrder)
+    {
         curvedOrder = CurvedOrder.Data({
             sellToken: IERC20(SELL_TOKEN),
             buyToken: IERC20(BUY_TOKEN),
@@ -206,10 +172,11 @@ contract ContractTest is DSTest {
         });
     }
 
-    function _create_gpv2_order_from_amounts(
-        uint256 sellAmount,
-        uint256 buyAmount
-    ) internal pure returns (GPv2Order.Data memory curvedOrder) {
+    function _create_gpv2_order_from_amounts(uint256 sellAmount, uint256 buyAmount)
+        internal
+        pure
+        returns (GPv2Order.Data memory curvedOrder)
+    {
         curvedOrder = GPv2Order.Data({
             sellToken: IERC20(SELL_TOKEN),
             buyToken: IERC20(BUY_TOKEN),
@@ -288,63 +255,28 @@ contract ContractTest is DSTest {
         buyAmount[0] = 1300e18;
         buyAmount[1] = 2601e18;
 
-        CurvedOrder.Data memory curvedOrder = _create_curved_order_from_amounts(
-            sellAmount,
-            buyAmount
+        CurvedOrder.Data memory curvedOrder = _create_curved_order_from_amounts(sellAmount, buyAmount);
+
+        assertTrue(CurvedOrder.executionAboveCurve(_create_gpv2_order_from_amounts(1, 1300), curvedOrder));
+
+        assertTrue(
+            CurvedOrder.executionAboveCurve(_create_gpv2_order_from_amounts(1e18 + 1, 1300e18 + 1300 + 1), curvedOrder)
         );
 
         assertTrue(
-            CurvedOrder.executionAboveCurve(
-                _create_gpv2_order_from_amounts(1, 1300),
-                curvedOrder
-            )
+            !CurvedOrder.executionAboveCurve(_create_gpv2_order_from_amounts(1e18 + 1, 1300e18 + 1), curvedOrder)
+        );
+        assertTrue(
+            !CurvedOrder.executionAboveCurve(_create_gpv2_order_from_amounts(1e18 + 1, 1300e18 - 1), curvedOrder)
         );
 
-        assertTrue(
-            CurvedOrder.executionAboveCurve(
-                _create_gpv2_order_from_amounts(1e18 + 1, 1300e18 + 1300 + 1),
-                curvedOrder
-            )
-        );
+        assertTrue(!CurvedOrder.executionAboveCurve(_create_gpv2_order_from_amounts(2e18, 2 * 1300e18), curvedOrder));
 
-        assertTrue(
-            !CurvedOrder.executionAboveCurve(
-                _create_gpv2_order_from_amounts(1e18 + 1, 1300e18 + 1),
-                curvedOrder
-            )
-        );
-        assertTrue(
-            !CurvedOrder.executionAboveCurve(
-                _create_gpv2_order_from_amounts(1e18 + 1, 1300e18 - 1),
-                curvedOrder
-            )
-        );
+        assertTrue(CurvedOrder.executionAboveCurve(_create_gpv2_order_from_amounts(2e18, 2 * 1301e18), curvedOrder));
 
-        assertTrue(
-            !CurvedOrder.executionAboveCurve(
-                _create_gpv2_order_from_amounts(2e18, 2 * 1300e18),
-                curvedOrder
-            )
-        );
-
-        assertTrue(
-            CurvedOrder.executionAboveCurve(
-                _create_gpv2_order_from_amounts(2e18, 2 * 1301e18),
-                curvedOrder
-            )
-        );
-
-        assertTrue(
-            CurvedOrder.executionAboveCurve(
-                _create_gpv2_order_from_amounts(1, 2700e18),
-                curvedOrder
-            )
-        );
+        assertTrue(CurvedOrder.executionAboveCurve(_create_gpv2_order_from_amounts(1, 2700e18), curvedOrder));
 
         vm.expectRevert("executed order size too large");
-        CurvedOrder.executionAboveCurve(
-            _create_gpv2_order_from_amounts(3e18, 4000e18),
-            curvedOrder
-        );
+        CurvedOrder.executionAboveCurve(_create_gpv2_order_from_amounts(3e18, 4000e18), curvedOrder);
     }
 }
