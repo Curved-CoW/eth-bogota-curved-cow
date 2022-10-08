@@ -50,12 +50,12 @@ contract CurvedOrderInstance is EIP1271Verifier {
     returns (
       GPv2Order.Data memory _gpv2Order,
       CurvedOrder.Data memory _curvedOrder,
-      bytes32 _curvedOrderSignature
+      bytes memory _curvedOrderSignature
     )
   {
     (_gpv2Order, _curvedOrder, _curvedOrderSignature) = abi.decode(
       _payload[20:],
-      (GPv2Order.Data, CurvedOrder.Data, bytes32)
+      (GPv2Order.Data, CurvedOrder.Data, bytes)
     );
   }
 
@@ -68,7 +68,7 @@ contract CurvedOrderInstance is EIP1271Verifier {
   function generateSignature(
     GPv2Order.Data calldata _gpv2Order,
     CurvedOrder.Data calldata _curvedOrder,
-    bytes32 _curvedOrderSignature
+    bytes calldata _curvedOrderSignature
   ) external view returns (bytes memory signature) {
     bytes memory encodedCurvedOrder = abi.encode(
       _gpv2Order,
