@@ -254,8 +254,8 @@
       }
     },
     "src/libraries/CurvedOrder.sol": {
-      "lastModificationDate": 1665207230707,
-      "contentHash": "3e91c958af8cef1f19f2ac9d5a41843b",
+      "lastModificationDate": 1665238393346,
+      "contentHash": "49042a12209b240ef17a7392179a5050",
       "sourceName": "src/libraries/CurvedOrder.sol",
       "solcConfig": {
         "settings": {
@@ -285,7 +285,8 @@
         }
       },
       "imports": [
-        "src/interfaces/IERC20.sol"
+        "src/interfaces/IERC20.sol",
+        "src/libraries/GPv2Order.sol"
       ],
       "versionRequirement": ">=0.8.0",
       "artifacts": {
@@ -426,8 +427,8 @@
       }
     },
     "src/test/Contract.t.sol": {
-      "lastModificationDate": 1665207230708,
-      "contentHash": "d67b3b2543d674253b194c5b16362abf",
+      "lastModificationDate": 1665239095545,
+      "contentHash": "a398b052bfb6e321cebdb43a75a624d2",
       "sourceName": "src/test/Contract.t.sol",
       "solcConfig": {
         "settings": {
@@ -469,59 +470,6 @@
       "artifacts": {
         "ContractTest": {
           "0.8.17+commit.8df45f5f.Darwin.appleclang": "Contract.t.sol/ContractTest.json"
-        }
-      }
-    },
-    "src/test/CurveTest.t.sol": {
-      "lastModificationDate": 1665235205520,
-      "contentHash": "b2b5ea09499c7d5377c9e2a55776c667",
-      "sourceName": "src/test/CurveTest.t.sol",
-      "solcConfig": {
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "metadata": {
-            "bytecodeHash": "ipfs"
-          },
-          "outputSelection": {
-            "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
-            }
-          },
-          "evmVersion": "london",
-          "libraries": {}
-        }
-      },
-      "imports": [
-        "lib/ds-test/src/test.sol",
-        "lib/forge-std/src/Vm.sol",
-        "src/interfaces/IERC1271.sol",
-        "src/interfaces/IERC20.sol",
-        "src/test/utils/Console.sol",
-        "src/test/utils/Utilities.sol",
-        "src/vendored/GPv2Order.sol"
-      ],
-      "versionRequirement": ">=0.8.0",
-      "artifacts": {
-        "ContractTest": {
-          "0.8.17+commit.8df45f5f.Darwin.appleclang": "CurveTest.t.sol/ContractTest.json"
-        },
-        "CurvedOrder": {
-          "0.8.17+commit.8df45f5f.Darwin.appleclang": "CurveTest.t.sol/CurvedOrder.json"
-        },
-        "ExecutedCurvedOrder": {
-          "0.8.17+commit.8df45f5f.Darwin.appleclang": "CurveTest.t.sol/ExecutedCurvedOrder.json"
         }
       }
     },
