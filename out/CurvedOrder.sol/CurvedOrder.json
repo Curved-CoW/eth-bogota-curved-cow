@@ -1,20 +1,20 @@
 {
   "abi": [],
   "bytecode": {
-    "object": "0x60566037600b82828239805160001a607314602a57634e487b7160e01b600052600060045260246000fd5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600080fdfea2646970667358221220c9ff392f8be1fabd3b535cd77dad76bb921caa78a02ea3853b24b66158530be164736f6c634300080f0033",
-    "sourceMap": "108:301:5:-:0;;;;;;;;;;;;;;;-1:-1:-1;;;108:301:5;;;;;;;;;;;;;;;;;",
+    "object": "0x60566037600b82828239805160001a607314602a57634e487b7160e01b600052600060045260246000fd5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600080fdfea264697066735822122029de484e0225520547175425ce3991c92a33060722e82259d63454652df24bff64736f6c63430008110033",
+    "sourceMap": "108:301:6:-:0;;;;;;;;;;;;;;;-1:-1:-1;;;108:301:6;;;;;;;;;;;;;;;;;",
     "linkReferences": {}
   },
   "deployedBytecode": {
-    "object": "0x73000000000000000000000000000000000000000030146080604052600080fdfea2646970667358221220c9ff392f8be1fabd3b535cd77dad76bb921caa78a02ea3853b24b66158530be164736f6c634300080f0033",
-    "sourceMap": "108:301:5:-:0;;;;;;;;",
+    "object": "0x73000000000000000000000000000000000000000030146080604052600080fdfea264697066735822122029de484e0225520547175425ce3991c92a33060722e82259d63454652df24bff64736f6c63430008110033",
+    "sourceMap": "108:301:6:-:0;;;;;;;;",
     "linkReferences": {}
   },
   "methodIdentifiers": {},
-  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.15+commit.e14f2714\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/libraries/CurvedOrder.sol\":\"CurvedOrder\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":ds-test/=lib/ds-test/src/\",\":forge-std/=lib/forge-std/src/\",\":solmate/=lib/solmate/src/\",\":weird-erc20/=lib/solmate/lib/weird-erc20/src/\"]},\"sources\":{\"src/interfaces/IERC20.sol\":{\"keccak256\":\"0xea1feab007b994ca55b7d7ac3c210802f3d58749b973c4d99b81fdbc18df06b9\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://047f0be224dddb4b6ff7e9b9caf8af3edcb278af5c97214654a0e2e66192049e\",\"dweb:/ipfs/QmawhghCFiGbr6Dt7RDZ1Cm3deni5HuwjsU7xs1jskwxrX\"]},\"src/libraries/CurvedOrder.sol\":{\"keccak256\":\"0xd74a3051547dc97e98c3cb1f19f8cc9244fa26db1018ddb17ed2b9b5a4339bc5\",\"license\":\"LGPL-3.0-or-later\",\"urls\":[\"bzz-raw://f6ff8f1b9d5431b5ac2e5bafa02a758595d63897874af7cc34dfbcf7904f4fc2\",\"dweb:/ipfs/QmT98QpAQDNnfnuSjLu2qoth1okPit6qEmwrkzUC5UhKDN\"]}},\"version\":1}",
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/libraries/CurvedOrder.sol\":\"CurvedOrder\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":ds-test/=lib/ds-test/src/\",\":forge-std/=lib/forge-std/src/\",\":solmate/=lib/solmate/src/\",\":weird-erc20/=lib/solmate/lib/weird-erc20/src/\"]},\"sources\":{\"src/interfaces/IERC20.sol\":{\"keccak256\":\"0xea1feab007b994ca55b7d7ac3c210802f3d58749b973c4d99b81fdbc18df06b9\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://047f0be224dddb4b6ff7e9b9caf8af3edcb278af5c97214654a0e2e66192049e\",\"dweb:/ipfs/QmawhghCFiGbr6Dt7RDZ1Cm3deni5HuwjsU7xs1jskwxrX\"]},\"src/libraries/CurvedOrder.sol\":{\"keccak256\":\"0xd74a3051547dc97e98c3cb1f19f8cc9244fa26db1018ddb17ed2b9b5a4339bc5\",\"license\":\"LGPL-3.0-or-later\",\"urls\":[\"bzz-raw://f6ff8f1b9d5431b5ac2e5bafa02a758595d63897874af7cc34dfbcf7904f4fc2\",\"dweb:/ipfs/QmT98QpAQDNnfnuSjLu2qoth1okPit6qEmwrkzUC5UhKDN\"]}},\"version\":1}",
   "metadata": {
     "compiler": {
-      "version": "0.8.15+commit.e14f2714"
+      "version": "0.8.17+commit.8df45f5f"
     },
     "language": "Solidity",
     "output": {
@@ -71,22 +71,22 @@
   },
   "ast": {
     "absolutePath": "src/libraries/CurvedOrder.sol",
-    "id": 2055,
+    "id": 2070,
     "exportedSymbols": {
       "CurvedOrder": [
-        2054
+        2069
       ],
       "IERC20": [
-        2027
+        2042
       ]
     },
     "nodeType": "SourceUnit",
-    "src": "46:364:5",
+    "src": "46:364:6",
     "nodes": [
       {
-        "id": 2029,
+        "id": 2044,
         "nodeType": "PragmaDirective",
-        "src": "46:24:5",
+        "src": "46:24:6",
         "literals": [
           "solidity",
           ">=",
@@ -95,57 +95,60 @@
         ]
       },
       {
-        "id": 2030,
+        "id": 2045,
         "nodeType": "ImportDirective",
-        "src": "72:34:5",
+        "src": "72:34:6",
         "absolutePath": "src/interfaces/IERC20.sol",
         "file": "../interfaces/IERC20.sol",
         "nameLocation": "-1:-1:-1",
-        "scope": 2055,
-        "sourceUnit": 2028,
+        "scope": 2070,
+        "sourceUnit": 2043,
         "symbolAliases": [],
         "unitAlias": ""
       },
       {
-        "id": 2054,
+        "id": 2069,
         "nodeType": "ContractDefinition",
-        "src": "108:301:5",
+        "src": "108:301:6",
         "nodes": [
           {
-            "id": 2053,
+            "id": 2068,
             "nodeType": "StructDefinition",
-            "src": "134:273:5",
+            "src": "134:273:6",
             "canonicalName": "CurvedOrder.Data",
             "members": [
               {
                 "constant": false,
-                "id": 2033,
+                "id": 2048,
                 "mutability": "mutable",
                 "name": "sellToken",
-                "nameLocation": "163:9:5",
+                "nameLocation": "163:9:6",
                 "nodeType": "VariableDeclaration",
-                "scope": 2053,
-                "src": "156:16:5",
+                "scope": 2068,
+                "src": "156:16:6",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_contract$_IERC20_$2027",
+                  "typeIdentifier": "t_contract$_IERC20_$2042",
                   "typeString": "contract IERC20"
                 },
                 "typeName": {
-                  "id": 2032,
+                  "id": 2047,
                   "nodeType": "UserDefinedTypeName",
                   "pathNode": {
-                    "id": 2031,
+                    "id": 2046,
                     "name": "IERC20",
+                    "nameLocations": [
+                      "156:6:6"
+                    ],
                     "nodeType": "IdentifierPath",
-                    "referencedDeclaration": 2027,
-                    "src": "156:6:5"
+                    "referencedDeclaration": 2042,
+                    "src": "156:6:6"
                   },
-                  "referencedDeclaration": 2027,
-                  "src": "156:6:5",
+                  "referencedDeclaration": 2042,
+                  "src": "156:6:6",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_IERC20_$2027",
+                    "typeIdentifier": "t_contract$_IERC20_$2042",
                     "typeString": "contract IERC20"
                   }
                 },
@@ -153,33 +156,36 @@
               },
               {
                 "constant": false,
-                "id": 2036,
+                "id": 2051,
                 "mutability": "mutable",
                 "name": "buyToken",
-                "nameLocation": "189:8:5",
+                "nameLocation": "189:8:6",
                 "nodeType": "VariableDeclaration",
-                "scope": 2053,
-                "src": "182:15:5",
+                "scope": 2068,
+                "src": "182:15:6",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_contract$_IERC20_$2027",
+                  "typeIdentifier": "t_contract$_IERC20_$2042",
                   "typeString": "contract IERC20"
                 },
                 "typeName": {
-                  "id": 2035,
+                  "id": 2050,
                   "nodeType": "UserDefinedTypeName",
                   "pathNode": {
-                    "id": 2034,
+                    "id": 2049,
                     "name": "IERC20",
+                    "nameLocations": [
+                      "182:6:6"
+                    ],
                     "nodeType": "IdentifierPath",
-                    "referencedDeclaration": 2027,
-                    "src": "182:6:5"
+                    "referencedDeclaration": 2042,
+                    "src": "182:6:6"
                   },
-                  "referencedDeclaration": 2027,
-                  "src": "182:6:5",
+                  "referencedDeclaration": 2042,
+                  "src": "182:6:6",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_IERC20_$2027",
+                    "typeIdentifier": "t_contract$_IERC20_$2042",
                     "typeString": "contract IERC20"
                   }
                 },
@@ -187,13 +193,13 @@
               },
               {
                 "constant": false,
-                "id": 2038,
+                "id": 2053,
                 "mutability": "mutable",
                 "name": "receiver",
-                "nameLocation": "215:8:5",
+                "nameLocation": "215:8:6",
                 "nodeType": "VariableDeclaration",
-                "scope": 2053,
-                "src": "207:16:5",
+                "scope": 2068,
+                "src": "207:16:6",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
@@ -201,10 +207,10 @@
                   "typeString": "address"
                 },
                 "typeName": {
-                  "id": 2037,
+                  "id": 2052,
                   "name": "address",
                   "nodeType": "ElementaryTypeName",
-                  "src": "207:7:5",
+                  "src": "207:7:6",
                   "stateMutability": "nonpayable",
                   "typeDescriptions": {
                     "typeIdentifier": "t_address",
@@ -215,13 +221,13 @@
               },
               {
                 "constant": false,
-                "id": 2041,
+                "id": 2056,
                 "mutability": "mutable",
                 "name": "sellAmount",
-                "nameLocation": "243:10:5",
+                "nameLocation": "243:10:6",
                 "nodeType": "VariableDeclaration",
-                "scope": 2053,
-                "src": "233:20:5",
+                "scope": 2068,
+                "src": "233:20:6",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
@@ -230,18 +236,18 @@
                 },
                 "typeName": {
                   "baseType": {
-                    "id": 2039,
+                    "id": 2054,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "233:7:5",
+                    "src": "233:7:6",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
-                  "id": 2040,
+                  "id": 2055,
                   "nodeType": "ArrayTypeName",
-                  "src": "233:9:5",
+                  "src": "233:9:6",
                   "typeDescriptions": {
                     "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
                     "typeString": "uint256[]"
@@ -251,13 +257,13 @@
               },
               {
                 "constant": false,
-                "id": 2044,
+                "id": 2059,
                 "mutability": "mutable",
                 "name": "buyAmount",
-                "nameLocation": "273:9:5",
+                "nameLocation": "273:9:6",
                 "nodeType": "VariableDeclaration",
-                "scope": 2053,
-                "src": "263:19:5",
+                "scope": 2068,
+                "src": "263:19:6",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
@@ -266,18 +272,18 @@
                 },
                 "typeName": {
                   "baseType": {
-                    "id": 2042,
+                    "id": 2057,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "263:7:5",
+                    "src": "263:7:6",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
-                  "id": 2043,
+                  "id": 2058,
                   "nodeType": "ArrayTypeName",
-                  "src": "263:9:5",
+                  "src": "263:9:6",
                   "typeDescriptions": {
                     "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
                     "typeString": "uint256[]"
@@ -287,13 +293,13 @@
               },
               {
                 "constant": false,
-                "id": 2046,
+                "id": 2061,
                 "mutability": "mutable",
                 "name": "validTo",
-                "nameLocation": "299:7:5",
+                "nameLocation": "299:7:6",
                 "nodeType": "VariableDeclaration",
-                "scope": 2053,
-                "src": "292:14:5",
+                "scope": 2068,
+                "src": "292:14:6",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
@@ -301,10 +307,10 @@
                   "typeString": "uint32"
                 },
                 "typeName": {
-                  "id": 2045,
+                  "id": 2060,
                   "name": "uint32",
                   "nodeType": "ElementaryTypeName",
-                  "src": "292:6:5",
+                  "src": "292:6:6",
                   "typeDescriptions": {
                     "typeIdentifier": "t_uint32",
                     "typeString": "uint32"
@@ -314,13 +320,13 @@
               },
               {
                 "constant": false,
-                "id": 2048,
+                "id": 2063,
                 "mutability": "mutable",
                 "name": "feeAmount",
-                "nameLocation": "324:9:5",
+                "nameLocation": "324:9:6",
                 "nodeType": "VariableDeclaration",
-                "scope": 2053,
-                "src": "316:17:5",
+                "scope": 2068,
+                "src": "316:17:6",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
@@ -328,10 +334,10 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 2047,
+                  "id": 2062,
                   "name": "uint256",
                   "nodeType": "ElementaryTypeName",
-                  "src": "316:7:5",
+                  "src": "316:7:6",
                   "typeDescriptions": {
                     "typeIdentifier": "t_uint256",
                     "typeString": "uint256"
@@ -341,13 +347,13 @@
               },
               {
                 "constant": false,
-                "id": 2050,
+                "id": 2065,
                 "mutability": "mutable",
                 "name": "sellTokenBalance",
-                "nameLocation": "351:16:5",
+                "nameLocation": "351:16:6",
                 "nodeType": "VariableDeclaration",
-                "scope": 2053,
-                "src": "343:24:5",
+                "scope": 2068,
+                "src": "343:24:6",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
@@ -355,10 +361,10 @@
                   "typeString": "bytes32"
                 },
                 "typeName": {
-                  "id": 2049,
+                  "id": 2064,
                   "name": "bytes32",
                   "nodeType": "ElementaryTypeName",
-                  "src": "343:7:5",
+                  "src": "343:7:6",
                   "typeDescriptions": {
                     "typeIdentifier": "t_bytes32",
                     "typeString": "bytes32"
@@ -368,13 +374,13 @@
               },
               {
                 "constant": false,
-                "id": 2052,
+                "id": 2067,
                 "mutability": "mutable",
                 "name": "buyTokenBalance",
-                "nameLocation": "385:15:5",
+                "nameLocation": "385:15:6",
                 "nodeType": "VariableDeclaration",
-                "scope": 2053,
-                "src": "377:23:5",
+                "scope": 2068,
+                "src": "377:23:6",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
@@ -382,10 +388,10 @@
                   "typeString": "bytes32"
                 },
                 "typeName": {
-                  "id": 2051,
+                  "id": 2066,
                   "name": "bytes32",
                   "nodeType": "ElementaryTypeName",
-                  "src": "377:7:5",
+                  "src": "377:7:6",
                   "typeDescriptions": {
                     "typeIdentifier": "t_bytes32",
                     "typeString": "bytes32"
@@ -395,8 +401,8 @@
               }
             ],
             "name": "Data",
-            "nameLocation": "141:4:5",
-            "scope": 2054,
+            "nameLocation": "141:4:6",
+            "scope": 2069,
             "visibility": "public"
           }
         ],
@@ -407,15 +413,15 @@
         "contractKind": "library",
         "fullyImplemented": true,
         "linearizedBaseContracts": [
-          2054
+          2069
         ],
         "name": "CurvedOrder",
-        "nameLocation": "116:11:5",
-        "scope": 2055,
+        "nameLocation": "116:11:6",
+        "scope": 2070,
         "usedErrors": []
       }
     ],
     "license": "LGPL-3.0-or-later"
   },
-  "id": 5
+  "id": 6
 }

@@ -7,13 +7,12 @@
     "tests": "test",
     "scripts": "script",
     "libraries": [
-      "lib",
-      "node_modules"
+      "lib"
     ]
   },
   "files": {
     "lib/ds-test/src/test.sol": {
-      "lastModificationDate": 1665193254527,
+      "lastModificationDate": 1665207230683,
       "contentHash": "5d45a46528eaf8a26f0a8d93669f3148",
       "sourceName": "lib/ds-test/src/test.sol",
       "solcConfig": {
@@ -47,12 +46,12 @@
       "versionRequirement": ">=0.4.23",
       "artifacts": {
         "DSTest": {
-          "0.8.15+commit.e14f2714.Darwin.appleclang": "test.sol/DSTest.json"
+          "0.8.17+commit.8df45f5f.Darwin.appleclang": "test.sol/DSTest.json"
         }
       }
     },
     "lib/forge-std/src/Vm.sol": {
-      "lastModificationDate": 1665193254549,
+      "lastModificationDate": 1665207230684,
       "contentHash": "65e64588f64f0dc4a71f37c88a1450d6",
       "sourceName": "lib/forge-std/src/Vm.sol",
       "solcConfig": {
@@ -86,12 +85,12 @@
       "versionRequirement": "^0.8.0",
       "artifacts": {
         "Vm": {
-          "0.8.15+commit.e14f2714.Darwin.appleclang": "Vm.sol/Vm.json"
+          "0.8.17+commit.8df45f5f.Darwin.appleclang": "Vm.sol/Vm.json"
         }
       }
     },
     "src/Verifier.sol": {
-      "lastModificationDate": 1665205755640,
+      "lastModificationDate": 1665207230707,
       "contentHash": "6cc4d6e2197984acf36045c2aa24c2d7",
       "sourceName": "src/Verifier.sol",
       "solcConfig": {
@@ -130,12 +129,12 @@
       "versionRequirement": ">=0.8.0",
       "artifacts": {
         "Verifier": {
-          "0.8.15+commit.e14f2714.Darwin.appleclang": "Verifier.sol/Verifier.json"
+          "0.8.17+commit.8df45f5f.Darwin.appleclang": "Verifier.sol/Verifier.json"
         }
       }
     },
     "src/interfaces/ERC1271.sol": {
-      "lastModificationDate": 1665203549978,
+      "lastModificationDate": 1665207230707,
       "contentHash": "bba2de512d01e0cff22cbfbc3e81ef69",
       "sourceName": "src/interfaces/ERC1271.sol",
       "solcConfig": {
@@ -169,15 +168,54 @@
       "versionRequirement": ">=0.8.0",
       "artifacts": {
         "EIP1271Verifier": {
-          "0.8.15+commit.e14f2714.Darwin.appleclang": "ERC1271.sol/EIP1271Verifier.json"
+          "0.8.17+commit.8df45f5f.Darwin.appleclang": "ERC1271.sol/EIP1271Verifier.json"
         },
         "GPv2EIP1271": {
-          "0.8.15+commit.e14f2714.Darwin.appleclang": "ERC1271.sol/GPv2EIP1271.json"
+          "0.8.17+commit.8df45f5f.Darwin.appleclang": "ERC1271.sol/GPv2EIP1271.json"
+        }
+      }
+    },
+    "src/interfaces/IERC1271.sol": {
+      "lastModificationDate": 1665207344218,
+      "contentHash": "f38066895e82b1cb1ff0e5e3e1cca589",
+      "sourceName": "src/interfaces/IERC1271.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs"
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "london",
+          "libraries": {}
+        }
+      },
+      "imports": [],
+      "versionRequirement": "^0.8.17",
+      "artifacts": {
+        "IERC1271": {
+          "0.8.17+commit.8df45f5f.Darwin.appleclang": "IERC1271.sol/IERC1271.json"
         }
       }
     },
     "src/interfaces/IERC20.sol": {
-      "lastModificationDate": 1665203549978,
+      "lastModificationDate": 1665207230707,
       "contentHash": "89a879aa494353362f37073d5994bb4b",
       "sourceName": "src/interfaces/IERC20.sol",
       "solcConfig": {
@@ -211,12 +249,12 @@
       "versionRequirement": ">=0.8.0",
       "artifacts": {
         "IERC20": {
-          "0.8.15+commit.e14f2714.Darwin.appleclang": "IERC20.sol/IERC20.json"
+          "0.8.17+commit.8df45f5f.Darwin.appleclang": "IERC20.sol/IERC20.json"
         }
       }
     },
     "src/libraries/CurvedOrder.sol": {
-      "lastModificationDate": 1665205755639,
+      "lastModificationDate": 1665207230707,
       "contentHash": "3e91c958af8cef1f19f2ac9d5a41843b",
       "sourceName": "src/libraries/CurvedOrder.sol",
       "solcConfig": {
@@ -252,12 +290,12 @@
       "versionRequirement": ">=0.8.0",
       "artifacts": {
         "CurvedOrder": {
-          "0.8.15+commit.e14f2714.Darwin.appleclang": "CurvedOrder.sol/CurvedOrder.json"
+          "0.8.17+commit.8df45f5f.Darwin.appleclang": "CurvedOrder.sol/CurvedOrder.json"
         }
       }
     },
     "src/libraries/GPv2Order.sol": {
-      "lastModificationDate": 1665203549979,
+      "lastModificationDate": 1665207230707,
       "contentHash": "8f0fdedc013ea2dd24c9d7178f9a380e",
       "sourceName": "src/libraries/GPv2Order.sol",
       "solcConfig": {
@@ -293,12 +331,12 @@
       "versionRequirement": ">=0.8.0",
       "artifacts": {
         "GPv2Order": {
-          "0.8.15+commit.e14f2714.Darwin.appleclang": "GPv2Order.sol/GPv2Order.json"
+          "0.8.17+commit.8df45f5f.Darwin.appleclang": "libraries/GPv2Order.sol/GPv2Order.json"
         }
       }
     },
     "src/libraries/GPv2Trade.sol": {
-      "lastModificationDate": 1665203549979,
+      "lastModificationDate": 1665207230707,
       "contentHash": "d65c8e6b34aaf5633644a2267ad22a2f",
       "sourceName": "src/libraries/GPv2Trade.sol",
       "solcConfig": {
@@ -338,12 +376,12 @@
       "versionRequirement": ">=0.8.0",
       "artifacts": {
         "GPv2Trade": {
-          "0.8.15+commit.e14f2714.Darwin.appleclang": "GPv2Trade.sol/GPv2Trade.json"
+          "0.8.17+commit.8df45f5f.Darwin.appleclang": "GPv2Trade.sol/GPv2Trade.json"
         }
       }
     },
     "src/mixins/GPv2Signing.sol": {
-      "lastModificationDate": 1665203549981,
+      "lastModificationDate": 1665207230707,
       "contentHash": "954ceb4acad0667f87037d4250545cf5",
       "sourceName": "src/mixins/GPv2Signing.sol",
       "solcConfig": {
@@ -383,12 +421,12 @@
       "versionRequirement": ">=0.8.0",
       "artifacts": {
         "GPv2Signing": {
-          "0.8.15+commit.e14f2714.Darwin.appleclang": "GPv2Signing.sol/GPv2Signing.json"
+          "0.8.17+commit.8df45f5f.Darwin.appleclang": "GPv2Signing.sol/GPv2Signing.json"
         }
       }
     },
     "src/test/Contract.t.sol": {
-      "lastModificationDate": 1665205755641,
+      "lastModificationDate": 1665207230708,
       "contentHash": "d67b3b2543d674253b194c5b16362abf",
       "sourceName": "src/test/Contract.t.sol",
       "solcConfig": {
@@ -430,12 +468,65 @@
       "versionRequirement": ">=0.8.0",
       "artifacts": {
         "ContractTest": {
-          "0.8.15+commit.e14f2714.Darwin.appleclang": "Contract.t.sol/ContractTest.json"
+          "0.8.17+commit.8df45f5f.Darwin.appleclang": "Contract.t.sol/ContractTest.json"
+        }
+      }
+    },
+    "src/test/CurveTest.t.sol": {
+      "lastModificationDate": 1665235205520,
+      "contentHash": "b2b5ea09499c7d5377c9e2a55776c667",
+      "sourceName": "src/test/CurveTest.t.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs"
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "london",
+          "libraries": {}
+        }
+      },
+      "imports": [
+        "lib/ds-test/src/test.sol",
+        "lib/forge-std/src/Vm.sol",
+        "src/interfaces/IERC1271.sol",
+        "src/interfaces/IERC20.sol",
+        "src/test/utils/Console.sol",
+        "src/test/utils/Utilities.sol",
+        "src/vendored/GPv2Order.sol"
+      ],
+      "versionRequirement": ">=0.8.0",
+      "artifacts": {
+        "ContractTest": {
+          "0.8.17+commit.8df45f5f.Darwin.appleclang": "CurveTest.t.sol/ContractTest.json"
+        },
+        "CurvedOrder": {
+          "0.8.17+commit.8df45f5f.Darwin.appleclang": "CurveTest.t.sol/CurvedOrder.json"
+        },
+        "ExecutedCurvedOrder": {
+          "0.8.17+commit.8df45f5f.Darwin.appleclang": "CurveTest.t.sol/ExecutedCurvedOrder.json"
         }
       }
     },
     "src/test/utils/Console.sol": {
-      "lastModificationDate": 1665203549994,
+      "lastModificationDate": 1665207230708,
       "contentHash": "64aa70f5ffba78366e8922af63d5406e",
       "sourceName": "src/test/utils/Console.sol",
       "solcConfig": {
@@ -469,12 +560,12 @@
       "versionRequirement": ">=0.8.0",
       "artifacts": {
         "console": {
-          "0.8.15+commit.e14f2714.Darwin.appleclang": "Console.sol/console.json"
+          "0.8.17+commit.8df45f5f.Darwin.appleclang": "Console.sol/console.json"
         }
       }
     },
     "src/test/utils/Utilities.sol": {
-      "lastModificationDate": 1665203549978,
+      "lastModificationDate": 1665207230708,
       "contentHash": "37c38b4b58d7647efb9b18c27031b5a9",
       "sourceName": "src/test/utils/Utilities.sol",
       "solcConfig": {
@@ -511,7 +602,90 @@
       "versionRequirement": ">=0.8.0",
       "artifacts": {
         "Utilities": {
-          "0.8.15+commit.e14f2714.Darwin.appleclang": "Utilities.sol/Utilities.json"
+          "0.8.17+commit.8df45f5f.Darwin.appleclang": "Utilities.sol/Utilities.json"
+        }
+      }
+    },
+    "src/vendored/GPv2Order.sol": {
+      "lastModificationDate": 1665207356585,
+      "contentHash": "9b33ad915406f55a4de33a04d207ed41",
+      "sourceName": "src/vendored/GPv2Order.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs"
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "london",
+          "libraries": {}
+        }
+      },
+      "imports": [
+        "src/interfaces/IERC20.sol"
+      ],
+      "versionRequirement": "^0.8.17",
+      "artifacts": {
+        "GPv2Order": {
+          "0.8.17+commit.8df45f5f.Darwin.appleclang": "vendored/GPv2Order.sol/GPv2Order.json"
+        }
+      }
+    },
+    "src/vendored/ICoWSwapOnchainOrders.sol": {
+      "lastModificationDate": 1665207356585,
+      "contentHash": "9372d7e071356c7668f32011f74884ec",
+      "sourceName": "src/vendored/ICoWSwapOnchainOrders.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs"
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "london",
+          "libraries": {}
+        }
+      },
+      "imports": [
+        "src/interfaces/IERC20.sol",
+        "src/vendored/GPv2Order.sol"
+      ],
+      "versionRequirement": "^0.8.17",
+      "artifacts": {
+        "ICoWSwapOnchainOrders": {
+          "0.8.17+commit.8df45f5f.Darwin.appleclang": "ICoWSwapOnchainOrders.sol/ICoWSwapOnchainOrders.json"
         }
       }
     }
