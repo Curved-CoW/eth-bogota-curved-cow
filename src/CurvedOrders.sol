@@ -49,7 +49,7 @@ contract CurvedOrders is ICoWSwapOnchainOrders  {
             data: hex""
         });
 
-        emit OrderPlacement(address(instance), gpv2Order, signature,curvedOrder);
+        emit OrderPlacement(address(instance), gpv2Order, signature,abi.encode(curvedOrder));
 
         orderUid = new bytes(GPv2Order.UID_LENGTH);
         orderUid.packOrderUidParams(gpv2OrderHash, address(instance), gpv2Order.validTo);
