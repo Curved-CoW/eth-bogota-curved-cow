@@ -341,17 +341,10 @@ contract ContractTest is DSTest {
             )
         );
 
-        // Not sure what this abomination is but I don't know how to
-        // check for a revert otherwise
-        try
-            CurvedOrder.executionAboveCurve(
-                _create_gpv2_order_from_amounts(3e18, 4000e18),
-                curvedOrder
-            )
-        returns (bool) {
-            assertTrue(1 == 2);
-        } catch {
-            assertTrue(1 == 1);
-        }
+        vm.expectRevert("executed order size too large");
+        CurvedOrder.executionAboveCurve(
+            _create_gpv2_order_from_amounts(3e18, 4000e18),
+            curvedOrder
+        );
     }
 }
