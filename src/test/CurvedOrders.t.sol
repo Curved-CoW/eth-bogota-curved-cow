@@ -14,6 +14,7 @@ import "../CurvedOrders.sol";
 import "./mock/MockCowSwapSettlement.sol";
 import "./mock/MockERC20.sol";
 
+
 contract CurvedOrdersTest is DSTest {
   Vm internal immutable vm = Vm(HEVM_ADDRESS);
 
@@ -27,6 +28,8 @@ contract CurvedOrdersTest is DSTest {
     hex"f3b277728b3fee749481eb3e0b3b48980dbbab78658fc419025cb16eee346775";
 
   address constant SETTLEMENT = 0x9008D19f58AAbD9eD0D60971565AA8510560ab41;
+
+  address constant LP_ADDRESS = 0x7B2419E0Ee0BD034F7Bf24874C12512AcAC6e21C;
 
   Utilities internal utils;
   address payable[] internal users;
@@ -69,20 +72,25 @@ contract CurvedOrdersTest is DSTest {
   }
 
   function test_creates_curved_order() public {
+    (bytes memory orderUid, address orderInstance) = _new_curved_order();
+    assertEq(orderUid.length, 56);
+    assertEq(abi.encodePacked(address(orderInstance)).length, 20);
+  }
+
+  function _new_curved_order() public returns (bytes memory, address) {
     uint256[] memory sellAmounts = _sell_amount();
     uint256[] memory buyAmounts = _buy_amount();
-    (bytes memory orderUId, address orderInstance) = orders.placeOrder(
+
+    (bytes memory orderUid, address orderInstance) = orders.placeOrder(
       _gpv2_order(sellAmounts[1], buyAmounts[1]),
-      _curved_order(sellAmounts, buyAmounts),
+      _curved_order_from_amounts(sellAmounts, buyAmounts),
       keccak256(bytes("this is a salt"))
     );
 
-    assertEq(orderUId.length, 56);
-    assertEq(abi.encodePacked(address(orderInstance)).length, 20);
-
+    return (orderUid, orderInstance);
   }
 
-  function _curved_order(
+  function _curved_order_from_amounts(
     uint256[] memory sellAmount,
     uint256[] memory buyAmount
   ) internal view returns (CurvedOrder.Data memory curvedOrder) {
@@ -121,7 +129,21 @@ contract CurvedOrdersTest is DSTest {
   }
 
   function test_decode_payload() public {
-    assertTrue(false);
+    (, address orderInstanceAddress) = _new_curved_order();
+    CurvedOrderInstance orderInstance = CurvedOrderInstance(
+      orderInstanceAddress
+    );
+    orderInstance.decode(truncated_signature);
+  }
+
+
+
+  function _strip_address_from_signature(bytes calldata signature)
+    public
+    pure
+    returns (bytes calldata)
+  {
+    return signature[20:];
   }
 
   function test_is_valid_signature() public {
@@ -132,7 +154,7 @@ contract CurvedOrdersTest is DSTest {
     assertTrue(false);
   }
 
-    function _sell_amount() internal pure returns (uint256[] memory) {
+  function _sell_amount() internal pure returns (uint256[] memory) {
     uint256[] memory sellAmount = new uint256[](2);
     sellAmount[0] = 1e18;
     sellAmount[1] = 2e18;
@@ -145,4 +167,8 @@ contract CurvedOrdersTest is DSTest {
     buyAmount[1] = 2600e18;
     return buyAmount;
   }
+
+
+
+    bytes  public truncated_signature = hex'000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb480000000000000000000000009008d19f58aabd9ed0d60971565aa8510560ab410000000000000000000000000000000000000000000000001bc16d674ec8000000000000000000000000000000000000000000000000008d0020474fb7000000000000000000000000000000000000000000000000000000000000006341fc0a00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002f3b277728b3fee749481eb3e0b3b48980dbbab78658fc419025cb16eee34677500000000000000000000000000000000000000000000000000000000000000005a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc95a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc900000000000000000000000000000000000000000000000000000000000001c00000000000000000000000000000000000000000000000000000000000000380000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb480000000000000000000000009008d19f58aabd9ed0d60971565aa8510560ab4100000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000160000000000000000000000000000000000000000000000000000000006341fc0a5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc95a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc900000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000de0b6b3a76400000000000000000000000000000000000000000000000000001bc16d674ec800000000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000046791fc84e07d0000000000000000000000000000000000000000000000000008d0020474fb70000000000000000000000000000000000000000000000000000000000000000000041488ff08f8e1573afb7361367ee69302bf66c837ed5282808e7c039a65bfb1b536fcc8d9158656d54e9860d01d950aaf0f67034f1c1f205e252913993c0668ba31b00000000000000000000000000000000000000000000000000000000000000';
 }
