@@ -168,12 +168,12 @@ contract CurvedOrdersTest is DSTest {
         scheme: ICoWSwapOnchainOrders.OnchainSigningScheme.Eip1271,
         data: hex""
       }),
-      abi.encode(_curved_order(sellAmounts, buyAmounts))
+      abi.encode(_curved_order_from_amounts(sellAmounts, buyAmounts))
     );
 
     (bytes memory orderUId, address orderInstance) = orders.placeOrder(
       _gpv2_order(sellAmounts[1], buyAmounts[1]),
-      _curved_order(sellAmounts, buyAmounts),
+      _curved_order_from_amounts(sellAmounts, buyAmounts),
       keccak256(bytes("this is a salt"))
     );
   }
