@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity >=0.8.0;
 
-import {DSTest} from "ds-test/test.sol";
-import {Utilities} from "./utils/Utilities.sol";
-import {console} from "./utils/Console.sol";
-import {Vm} from "forge-std/Vm.sol";
+import { DSTest } from "ds-test/test.sol";
+import { Utilities } from "./utils/Utilities.sol";
+import { console } from "./utils/Console.sol";
+import { Vm } from "forge-std/Vm.sol";
 
 import "../libraries/CurvedOrder.sol";
 import "../libraries/GPv2Order.sol";
@@ -12,57 +12,138 @@ import "../interfaces/IERC20.sol";
 import "../interfaces/ICoWSwapSettlement.sol";
 import "../CurvedOrders.sol";
 import "./mock/MockCowSwapSettlement.sol";
+import "./mock/MockERC20.sol";
 
 contract CurvedOrdersTest is DSTest {
-    Vm internal immutable vm = Vm(HEVM_ADDRESS);
+  Vm internal immutable vm = Vm(HEVM_ADDRESS);
 
-    address constant BUY_TOKEN = address(uint160(0x1337));
-    address constant SELL_TOKEN = address(uint160(0x13372));
-    address constant VERIFIER = 0x0000000000000000000000000000000000000001;
-    address constant RECEIVER = 0x0000000000000000000000000000000000000002;
-    bytes32 constant BALANCE_ERC20 = hex"5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9";
-    bytes32 constant KIND_SELL = hex"f3b277728b3fee749481eb3e0b3b48980dbbab78658fc419025cb16eee346775";
+  address immutable BUY_TOKEN;
+  address immutable SELL_TOKEN;
+  address constant VERIFIER = 0x0000000000000000000000000000000000000001;
+  address constant RECEIVER = 0x0000000000000000000000000000000000000002;
+  bytes32 constant BALANCE_ERC20 =
+    hex"5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9";
+  bytes32 constant KIND_SELL =
+    hex"f3b277728b3fee749481eb3e0b3b48980dbbab78658fc419025cb16eee346775";
 
-    address constant SETTLEMENT = 0x9008D19f58AAbD9eD0D60971565AA8510560ab41;
+  address constant SETTLEMENT = 0x9008D19f58AAbD9eD0D60971565AA8510560ab41;
 
-    Utilities internal utils;
-    address payable[] internal users;
+  Utilities internal utils;
+  address payable[] internal users;
 
-    CurvedOrders orders;
+  CurvedOrders orders;
 
-    function setUp() public {
-        utils = new Utilities();
-        users = utils.createUsers(5);
-        ICoWSwapSettlement settlement = new MockCowSwapSettlement();
-        orders = new CurvedOrders(settlement);
-    }
+  ERC20 sellToken;
+  ERC20 buyToken;
 
-    function test_constructor() public {
-        assertEq(address(orders), address(orders));
-    }
+  constructor() {
+    sellToken = new MockERC20("Sell Token", "ST", 18);
+    buyToken = new MockERC20("Buy Token", "ST", 18);
+    BUY_TOKEN = address(buyToken);
+    SELL_TOKEN = address(sellToken);
+  }
+
+  function setUp() public {
+    utils = new Utilities();
+    users = utils.createUsers(5);
+    ICoWSwapSettlement settlement = new MockCowSwapSettlement();
+    orders = new CurvedOrders(settlement);
+    sellToken.approve(address(orders), type(uint256).max);
+  }
+
+  function test_balances_of_msg_sender() public {
+    assertEq(IERC20(SELL_TOKEN).balanceOf(address(this)), 1_000_000 * 10**18);
+    assertEq(IERC20(BUY_TOKEN).balanceOf(address(this)), 1_000_000 * 10**18);
+  }
+
+  function test_constructor() public {
+    assertEq(address(orders), address(orders));
+  }
+
+  function test_generate_payload_v1() public {
+    assertTrue(false);
+  }
+
+  function test_generate_payload_v2() public {
+    assertTrue(false);
+  }
 
 
-    function test_generate_payload_v1() public {
-        assertTrue(false);
-    }
 
-    function test_generate_payload_v2() public {
-        assertTrue(false);
-    }
+  function test_creates_curved_order() public {
+    uint256[] memory sellAmounts = _sell_amount();
+    uint256[] memory buyAmounts = _buy_amount();
+    (bytes memory orderUId, address orderInstance) = orders.placeOrder(
+      _gpv2_order(sellAmounts[1], buyAmounts[1]),
+      _curved_order(sellAmounts, buyAmounts),
+      keccak256(bytes("this is a salt"))
+    );
 
-    function test_creates_curved_order() public {
-        assertTrue(false);
-    }
+    assertEq(orderUId.length, 56);
+    assertEq(orderInstance, address(0xaf3Cc770Aa8a111a4B2e1db9D06C0E2d2E595816));
 
-    function test_decode_payload() public {
-        assertTrue(false);
-    }
+  }
 
-    function test_is_valid_signature() public {
-        assertTrue(false);
-    }
+  function _curved_order(
+    uint256[] memory sellAmount,
+    uint256[] memory buyAmount
+  ) internal view returns (CurvedOrder.Data memory curvedOrder) {
+    curvedOrder = CurvedOrder.Data({
+      sellToken: IERC20(SELL_TOKEN),
+      buyToken: IERC20(BUY_TOKEN),
+      receiver: RECEIVER,
+      sellAmount: sellAmount,
+      buyAmount: buyAmount,
+      validTo: 500,
+      sellTokenBalance: BALANCE_ERC20,
+      buyTokenBalance: BALANCE_ERC20
+    });
+  }
 
-    function test_placing_order_emits_event() public {
-        assertTrue(false);
-    }
+  function _gpv2_order(uint256 sellAmount, uint256 buyAmount)
+    internal
+    returns (GPv2Order.Data memory)
+  {
+    return
+      GPv2Order.Data({
+        sellToken: IERC20(SELL_TOKEN),
+        buyToken: IERC20(BUY_TOKEN),
+        receiver: RECEIVER,
+        sellAmount: sellAmount,
+        buyAmount: buyAmount,
+        validTo: 500,
+        appData: 0,
+        feeAmount: 0,
+        kind: KIND_SELL,
+        partiallyFillable: true,
+        sellTokenBalance: BALANCE_ERC20,
+        buyTokenBalance: BALANCE_ERC20
+      });
+  }
+
+  function test_decode_payload() public {
+    assertTrue(false);
+  }
+
+  function test_is_valid_signature() public {
+    assertTrue(false);
+  }
+
+  function test_placing_order_emits_event() public {
+    assertTrue(false);
+  }
+
+    function _sell_amount() internal pure returns (uint256[] memory) {
+    uint256[] memory sellAmount = new uint256[](2);
+    sellAmount[0] = 1e18;
+    sellAmount[1] = 2e18;
+    return sellAmount;
+  }
+
+  function _buy_amount() internal pure returns (uint256[] memory) {
+    uint256[] memory buyAmount = new uint256[](2);
+    buyAmount[0] = 1300e18;
+    buyAmount[1] = 2600e18;
+    return buyAmount;
+  }
 }

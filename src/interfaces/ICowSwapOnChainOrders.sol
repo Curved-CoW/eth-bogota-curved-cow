@@ -7,7 +7,6 @@ pragma solidity ^0.8.17;
 
 import "../libraries/GPv2Order.sol";
 
-
 /// @title CoW Swap Onchain Order Creator Interface
 /// @author CoW Swap Developers
 interface ICoWSwapOnchainOrders {

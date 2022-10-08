@@ -173,9 +173,9 @@ contract ContractTest is DSTest {
     function _create_gpv2_order_from_amounts(uint256 sellAmount, uint256 buyAmount)
         internal
         pure
-        returns (GPv2Order.Data memory curvedOrder)
+        returns (GPv2Order.Data memory gpv2Order)
     {
-        curvedOrder = GPv2Order.Data({
+        gpv2Order = GPv2Order.Data({
             sellToken: IERC20(SELL_TOKEN),
             buyToken: IERC20(BUY_TOKEN),
             receiver: RECEIVER,

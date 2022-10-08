@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import { ICoWSwapSettlement } from "../../interfaces/ICoWSwapSettlement.sol";
+import {ICoWSwapSettlement} from "../../interfaces/ICoWSwapSettlement.sol";
 
 contract MockCowSwapSettlement is ICoWSwapSettlement {
     function domainSeparator() external pure returns (bytes32) {
@@ -9,6 +9,6 @@ contract MockCowSwapSettlement is ICoWSwapSettlement {
     }
 
     function vaultRelayer() external pure returns (address) {
-        return address(uint160(0x1337));
+        return address(uint160(0x4511));
     }
 }
