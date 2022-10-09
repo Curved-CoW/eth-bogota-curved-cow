@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity >=0.8.0;
 
-import { DSTest } from "ds-test/test.sol";
-import { Utilities } from "./utils/Utilities.sol";
-import { console } from "./utils/Console.sol";
-import { Vm } from "forge-std/Vm.sol";
+import {DSTest} from "ds-test/test.sol";
+import {Utilities} from "./utils/Utilities.sol";
+import {console} from "./utils/Console.sol";
+import {Vm} from "forge-std/Vm.sol";
 
 import "../libraries/CurvedOrder.sol";
 import "../libraries/GPv2Order.sol";
@@ -14,161 +14,166 @@ import "../CurvedOrders.sol";
 import "./mock/MockCowSwapSettlement.sol";
 import "./mock/MockERC20.sol";
 
-
 contract CurvedOrdersTest is DSTest {
-  Vm internal immutable vm = Vm(HEVM_ADDRESS);
+    Vm internal immutable vm = Vm(HEVM_ADDRESS);
 
-  address immutable BUY_TOKEN;
-  address immutable SELL_TOKEN;
-  address constant VERIFIER = 0x0000000000000000000000000000000000000001;
-  address constant RECEIVER = 0x0000000000000000000000000000000000000002;
-  bytes32 constant BALANCE_ERC20 =
-    hex"5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9";
-  bytes32 constant KIND_SELL =
-    hex"f3b277728b3fee749481eb3e0b3b48980dbbab78658fc419025cb16eee346775";
+    address immutable BUY_TOKEN;
+    address immutable SELL_TOKEN;
+    address constant VERIFIER = 0x0000000000000000000000000000000000000001;
+    address constant RECEIVER = 0x0000000000000000000000000000000000000002;
+    bytes32 constant BALANCE_ERC20 = hex"5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9";
+    bytes32 constant KIND_SELL = hex"f3b277728b3fee749481eb3e0b3b48980dbbab78658fc419025cb16eee346775";
 
-  address constant SETTLEMENT = 0x9008D19f58AAbD9eD0D60971565AA8510560ab41;
+    address constant SETTLEMENT = 0x9008D19f58AAbD9eD0D60971565AA8510560ab41;
 
-  address constant LP_ADDRESS = 0x7B2419E0Ee0BD034F7Bf24874C12512AcAC6e21C;
+    address constant LP_ADDRESS = 0x7B2419E0Ee0BD034F7Bf24874C12512AcAC6e21C;
 
-  Utilities internal utils;
-  address payable[] internal users;
+    Utilities internal utils;
+    address payable[] internal users;
 
-  CurvedOrders orders;
+    CurvedOrders orders;
 
-  ERC20 sellToken;
-  ERC20 buyToken;
+    ERC20 sellToken;
+    ERC20 buyToken;
 
-  constructor() {
-    sellToken = new MockERC20("Sell Token", "ST", 18);
-    buyToken = new MockERC20("Buy Token", "ST", 18);
-    BUY_TOKEN = address(buyToken);
-    SELL_TOKEN = address(sellToken);
-  }
+    constructor() {
+        sellToken = new MockERC20("Sell Token", "ST", 18);
+        buyToken = new MockERC20("Buy Token", "ST", 18);
+        BUY_TOKEN = address(buyToken);
+        SELL_TOKEN = address(sellToken);
+    }
 
-  function setUp() public {
-    utils = new Utilities();
-    users = utils.createUsers(5);
-    ICoWSwapSettlement settlement = new MockCowSwapSettlement();
-    orders = new CurvedOrders(settlement);
-    sellToken.approve(address(orders), type(uint256).max);
-  }
+    function setUp() public {
+        utils = new Utilities();
+        users = utils.createUsers(5);
+        ICoWSwapSettlement settlement = new MockCowSwapSettlement();
+        orders = new CurvedOrders(settlement);
+        sellToken.approve(address(orders), type(uint256).max);
+    }
 
-  function test_balances_of_msg_sender() public {
-    assertEq(IERC20(SELL_TOKEN).balanceOf(address(this)), 1_000_000 * 10**18);
-    assertEq(IERC20(BUY_TOKEN).balanceOf(address(this)), 1_000_000 * 10**18);
-  }
+    function test_balances_of_msg_sender() public {
+        assertEq(IERC20(SELL_TOKEN).balanceOf(address(this)), 1_000_000 * 10 ** 18);
+        assertEq(IERC20(BUY_TOKEN).balanceOf(address(this)), 1_000_000 * 10 ** 18);
+    }
 
-  function test_constructor() public {
-    assertEq(address(orders), address(orders));
-  }
+    function test_constructor() public {
+        assertEq(address(orders), address(orders));
+    }
 
-  function test_generate_payload_v1() public {
-    assertTrue(false);
-  }
+    function test_generate_payload_v1() public {
+        assertTrue(false);
+    }
 
-  function test_generate_payload_v2() public {
-    assertTrue(false);
-  }
+    function test_generate_payload_v2() public {
+        assertTrue(false);
+    }
 
-  function test_creates_curved_order() public {
-    (bytes memory orderUid, address orderInstance) = _new_curved_order();
-    assertEq(orderUid.length, 56);
-    assertEq(abi.encodePacked(address(orderInstance)).length, 20);
-  }
+    function test_creates_curved_order() public {
+        (bytes memory orderUid, address orderInstance) = _new_curved_order();
+        assertEq(orderUid.length, 56);
+        assertEq(abi.encodePacked(address(orderInstance)).length, 20);
+    }
 
-  function _new_curved_order() public returns (bytes memory, address) {
-    uint256[] memory sellAmounts = _sell_amount();
-    uint256[] memory buyAmounts = _buy_amount();
+    function _new_curved_order() public returns (bytes memory, address) {
+        uint256[] memory sellAmounts = _sell_amount();
+        uint256[] memory buyAmounts = _buy_amount();
 
-    (bytes memory orderUid, address orderInstance) = orders.placeOrder(
-      _gpv2_order(sellAmounts[1], buyAmounts[1]),
-      _curved_order_from_amounts(sellAmounts, buyAmounts),
-      keccak256(bytes("this is a salt"))
-    );
+        (bytes memory orderUid, address orderInstance) = orders.placeOrder(
+            _gpv2_order(sellAmounts[1], buyAmounts[1]),
+            _curved_order_from_amounts(sellAmounts, buyAmounts),
+            keccak256(bytes("this is a salt"))
+        );
 
-    return (orderUid, orderInstance);
-  }
+        return (orderUid, orderInstance);
+    }
 
-  function _curved_order_from_amounts(
-    uint256[] memory sellAmount,
-    uint256[] memory buyAmount
-  ) internal view returns (CurvedOrder.Data memory curvedOrder) {
-    curvedOrder = CurvedOrder.Data({
-      sellToken: IERC20(SELL_TOKEN),
-      buyToken: IERC20(BUY_TOKEN),
-      receiver: RECEIVER,
-      sellAmount: sellAmount,
-      buyAmount: buyAmount,
-      validTo: 500,
-      sellTokenBalance: BALANCE_ERC20,
-      buyTokenBalance: BALANCE_ERC20
-    });
-  }
+    function _curved_order_from_amounts(uint256[] memory sellAmount, uint256[] memory buyAmount)
+        internal
+        view
+        returns (CurvedOrder.Data memory curvedOrder)
+    {
+        curvedOrder = CurvedOrder.Data({
+            sellToken: IERC20(SELL_TOKEN),
+            buyToken: IERC20(BUY_TOKEN),
+            receiver: RECEIVER,
+            sellAmount: sellAmount,
+            buyAmount: buyAmount,
+            validTo: 500,
+            sellTokenBalance: BALANCE_ERC20,
+            buyTokenBalance: BALANCE_ERC20
+        });
+    }
 
-  function _gpv2_order(uint256 sellAmount, uint256 buyAmount)
-    internal
-    view
-    returns (GPv2Order.Data memory)
-  {
-    return
-      GPv2Order.Data({
-        sellToken: IERC20(SELL_TOKEN),
-        buyToken: IERC20(BUY_TOKEN),
-        receiver: RECEIVER,
-        sellAmount: sellAmount,
-        buyAmount: buyAmount,
-        validTo: 500,
-        appData: 0,
-        feeAmount: 0,
-        kind: KIND_SELL,
-        partiallyFillable: true,
-        sellTokenBalance: BALANCE_ERC20,
-        buyTokenBalance: BALANCE_ERC20
-      });
-  }
+    function _gpv2_order(uint256 sellAmount, uint256 buyAmount) internal view returns (GPv2Order.Data memory) {
+        return GPv2Order.Data({
+            sellToken: IERC20(SELL_TOKEN),
+            buyToken: IERC20(BUY_TOKEN),
+            receiver: RECEIVER,
+            sellAmount: sellAmount,
+            buyAmount: buyAmount,
+            validTo: 500,
+            appData: 0,
+            feeAmount: 0,
+            kind: KIND_SELL,
+            partiallyFillable: true,
+            sellTokenBalance: BALANCE_ERC20,
+            buyTokenBalance: BALANCE_ERC20
+        });
+    }
 
-  function test_decode_payload() public {
-    (, address orderInstanceAddress) = _new_curved_order();
-    CurvedOrderInstance orderInstance = CurvedOrderInstance(
-      orderInstanceAddress
-    );
-    orderInstance.decode(truncated_signature);
-  }
+    function test_decode_payload() public {
+        (, address orderInstanceAddress) = _new_curved_order();
+        CurvedOrderInstance orderInstance = CurvedOrderInstance(orderInstanceAddress);
 
+        (GPv2Order.Data memory gpv2Order, CurvedOrder.Data memory curvedOrder, bytes memory curvedOrderSignature) =
+            orderInstance.decode(truncated_signature);
 
+        assertEq(address(gpv2Order.sellToken), address(0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2));
+        assertEq(address(gpv2Order.buyToken), address(0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48));
+        assertEq(address(gpv2Order.receiver), address(SETTLEMENT));
+        assertEq(gpv2Order.sellAmount, 2000000000000000000);
+        assertEq(gpv2Order.buyAmount, 2600999999999999737856);
+        assertEq(gpv2Order.validTo, 1665268746);
+        assertEq(gpv2Order.kind, KIND_SELL);
+        assertEq(gpv2Order.sellTokenBalance, BALANCE_ERC20);
+        assertEq(gpv2Order.buyTokenBalance, BALANCE_ERC20);
 
-  function _strip_address_from_signature(bytes calldata signature)
-    public
-    pure
-    returns (bytes calldata)
-  {
-    return signature[20:];
-  }
+        assertEq(address(curvedOrder.sellToken), address(0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2));
+        assertEq(address(curvedOrder.buyToken), address(0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48));
+        assertEq(address(curvedOrder.receiver), address(SETTLEMENT));
+        assertEq(curvedOrder.validTo, 1665268746);
+        assertEq(curvedOrder.sellAmount.length, 2);
+        assertEq(curvedOrder.buyAmount.length, 2);
+        assertEq(curvedOrder.sellTokenBalance, BALANCE_ERC20);
+        assertEq(curvedOrder.buyTokenBalance, BALANCE_ERC20);
+    }
 
-  function test_is_valid_signature() public {
-    assertTrue(false);
-  }
+    function _strip_address_from_signature(bytes calldata signature) public pure returns (bytes calldata) {
+        return signature[20:];
+    }
 
-  function test_placing_order_emits_event() public {
-    assertTrue(false);
-  }
+    function test_is_valid_signature() public {
+        assertTrue(false);
+    }
 
-  function _sell_amount() internal pure returns (uint256[] memory) {
-    uint256[] memory sellAmount = new uint256[](2);
-    sellAmount[0] = 1e18;
-    sellAmount[1] = 2e18;
-    return sellAmount;
-  }
+    function test_placing_order_emits_event() public {
+        assertTrue(false);
+    }
 
-  function _buy_amount() internal pure returns (uint256[] memory) {
-    uint256[] memory buyAmount = new uint256[](2);
-    buyAmount[0] = 1300e18;
-    buyAmount[1] = 2600e18;
-    return buyAmount;
-  }
+    function _sell_amount() internal pure returns (uint256[] memory) {
+        uint256[] memory sellAmount = new uint256[](2);
+        sellAmount[0] = 1e18;
+        sellAmount[1] = 2e18;
+        return sellAmount;
+    }
 
+    function _buy_amount() internal pure returns (uint256[] memory) {
+        uint256[] memory buyAmount = new uint256[](2);
+        buyAmount[0] = 1300e18;
+        buyAmount[1] = 2600e18;
+        return buyAmount;
+    }
 
-
-    bytes  public truncated_signature = hex'000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb480000000000000000000000009008d19f58aabd9ed0d60971565aa8510560ab410000000000000000000000000000000000000000000000001bc16d674ec8000000000000000000000000000000000000000000000000008d0020474fb7000000000000000000000000000000000000000000000000000000000000006341fc0a00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002f3b277728b3fee749481eb3e0b3b48980dbbab78658fc419025cb16eee34677500000000000000000000000000000000000000000000000000000000000000005a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc95a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc900000000000000000000000000000000000000000000000000000000000001c00000000000000000000000000000000000000000000000000000000000000380000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb480000000000000000000000009008d19f58aabd9ed0d60971565aa8510560ab4100000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000160000000000000000000000000000000000000000000000000000000006341fc0a5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc95a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc900000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000de0b6b3a76400000000000000000000000000000000000000000000000000001bc16d674ec800000000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000046791fc84e07d0000000000000000000000000000000000000000000000000008d0020474fb70000000000000000000000000000000000000000000000000000000000000000000041488ff08f8e1573afb7361367ee69302bf66c837ed5282808e7c039a65bfb1b536fcc8d9158656d54e9860d01d950aaf0f67034f1c1f205e252913993c0668ba31b00000000000000000000000000000000000000000000000000000000000000';
+    bytes public truncated_signature =
+        hex"000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb480000000000000000000000009008d19f58aabd9ed0d60971565aa8510560ab410000000000000000000000000000000000000000000000001bc16d674ec8000000000000000000000000000000000000000000000000008d0020474fb7000000000000000000000000000000000000000000000000000000000000006341fc0a00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002f3b277728b3fee749481eb3e0b3b48980dbbab78658fc419025cb16eee34677500000000000000000000000000000000000000000000000000000000000000005a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc95a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc900000000000000000000000000000000000000000000000000000000000001c00000000000000000000000000000000000000000000000000000000000000380000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb480000000000000000000000009008d19f58aabd9ed0d60971565aa8510560ab4100000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000160000000000000000000000000000000000000000000000000000000006341fc0a5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc95a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc900000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000de0b6b3a76400000000000000000000000000000000000000000000000000001bc16d674ec800000000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000046791fc84e07d0000000000000000000000000000000000000000000000000008d0020474fb70000000000000000000000000000000000000000000000000000000000000000000041488ff08f8e1573afb7361367ee69302bf66c837ed5282808e7c039a65bfb1b536fcc8d9158656d54e9860d01d950aaf0f67034f1c1f205e252913993c0668ba31b00000000000000000000000000000000000000000000000000000000000000";
 }

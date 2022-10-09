@@ -18,7 +18,7 @@ contract CurvedOrderInstance is EIP1271Verifier {
 
     bytes32 public _curvedOrderHash;
 
-    constructor(address owner_, IERC20 _sellToken, ICoWSwapSettlement _settlement)  {
+    constructor(address owner_, IERC20 _sellToken, ICoWSwapSettlement _settlement) {
         owner = owner_;
         sellToken = _sellToken;
         settlement = _settlement;
@@ -39,7 +39,11 @@ contract CurvedOrderInstance is EIP1271Verifier {
     function decode(bytes calldata _payload)
         public
         pure
-        returns (GPv2Order.Data memory _gpv2Order, CurvedOrder.Data memory _curvedOrder, bytes memory _curvedOrderSignature)
+        returns (
+            GPv2Order.Data memory _gpv2Order,
+            CurvedOrder.Data memory _curvedOrder,
+            bytes memory _curvedOrderSignature
+        )
     {
         (_gpv2Order, _curvedOrder, _curvedOrderSignature) =
             abi.decode(_payload, (GPv2Order.Data, CurvedOrder.Data, bytes));
