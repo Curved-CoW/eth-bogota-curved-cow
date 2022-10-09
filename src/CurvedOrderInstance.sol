@@ -39,10 +39,6 @@ contract CurvedOrderInstance is EIP1271Verifier {
     /// GPv2 contracts.
     bytes32 public immutable domainSeparator;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> e7b7d5b (fmting)
     constructor(address owner_, IERC20 _sellToken, ICoWSwapSettlement _settlement) {
         owner = owner_;
         sellToken = _sellToken;
