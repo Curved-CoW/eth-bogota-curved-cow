@@ -12,6 +12,7 @@ import "./interfaces/ICoWSwapSettlement.sol";
 
 contract CurvedOrderInstance is EIP1271Verifier {
     ICoWSwapSettlement public immutable settlement;
+    address private constant vaultRelayer = 0xC92E8bdf79f0507f65a392b0ab4667716BFE0110;
 
     address public immutable owner;
     IERC20 public immutable sellToken;
@@ -43,7 +44,7 @@ contract CurvedOrderInstance is EIP1271Verifier {
         owner = owner_;
         sellToken = _sellToken;
         settlement = _settlement;
-        _sellToken.approve(_settlement.vaultRelayer(), type(uint256).max);
+        // _sellToken.approve(_settlement.vaultRelayer(), type(uint256).max);
         uint256 chainId;
         // solhint-disable-next-line no-inline-assembly
         assembly {
@@ -52,6 +53,19 @@ contract CurvedOrderInstance is EIP1271Verifier {
 
         domainSeparator = keccak256(abi.encode(DOMAIN_TYPE_HASH, DOMAIN_NAME, DOMAIN_VERSION, chainId, address(this)));
     }
+
+
+    function withDraw(IERC20 token) public {
+      require(msg.sender == owner, "only owner can withdraw");
+      token.transfer(owner, token.balanceOf(address(this)));
+    }
+
+    function approve(IERC20 token, uint amount) public {
+      require(msg.sender == owner, "only owner can approve");
+      token.approve(vaultRelayer, amount);
+    }
+
+
 
     /// @param message The signed message.
     /// @param encodedSignature The encoded signature.
