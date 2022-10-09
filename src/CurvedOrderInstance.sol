@@ -77,6 +77,10 @@ contract CurvedOrderInstance is EIP1271Verifier {
         require(signer != address(0), "GPv2: invalid ecdsa signature");
     }
 
+    function curvedOrderHash(CurvedOrder.Data calldata _curvedOrder) public returns (bytes32 _hash){
+        bytes32 _hash = keccak256(abi.encode(_curvedOrder));
+    }
+
     /**
      * @notice isValidSignature returns whether the provider signature and hash are valid. This method is called by GPv2 settlement contract when validating an order for execution
      * @param _hash bytes32 hash of the GPv2Order.Data struct
@@ -87,10 +91,26 @@ contract CurvedOrderInstance is EIP1271Verifier {
             decode(_payload);
         console.log("signature");
         console.logBytes(_curvedOrderSignature);
-        bytes memory msg_bytes = abi.encode(_curvedOrder);
+
+        bytes memory msg_bytes = abi.encode( _curvedOrder.sellToken, 
+        _curvedOrder.buyToken,
+        _curvedOrder.receiver,
+        _curvedOrder.sellAmount,
+        _curvedOrder.buyAmount,
+        _curvedOrder.validTo,
+        _curvedOrder.sellTokenBalance,
+        _curvedOrder.buyTokenBalance
+         );
         console.log("bytes");
         console.logBytes(msg_bytes);
-        bytes32 msg_hash = keccak256(abi.encode(_curvedOrder));
+        console.log("len", msg_bytes.length);
+        uint msg_len = msg_bytes.length-32;
+
+
+
+        bytes32 msg_hash = keccak256(msg_bytes);
+        // bytes32 msg_hash = keccak256(abi.encodePacked(hex"19", hex"45", msg_bytes));
+        console.log("hash");
         console.logBytes32(msg_hash);
         address recovered_signer = this.ecdsaRecover(msg_hash, _curvedOrderSignature);
         console.log("recovered signer");
