@@ -53,18 +53,15 @@ contract CurvedOrderInstance is EIP1271Verifier {
         domainSeparator = keccak256(abi.encode(DOMAIN_TYPE_HASH, DOMAIN_NAME, DOMAIN_VERSION, chainId, address(this)));
     }
 
-
     function withDraw(IERC20 token) public {
-      require(msg.sender == owner, "only owner can withdraw");
-      token.transfer(owner, token.balanceOf(address(this)));
+        require(msg.sender == owner, "only owner can withdraw");
+        token.transfer(owner, token.balanceOf(address(this)));
     }
 
-    function approve(IERC20 token, uint amount) public {
-      require(msg.sender == owner, "only owner can approve");
-      token.approve(vaultRelayer, amount);
+    function approve(IERC20 token, uint256 amount) public {
+        require(msg.sender == owner, "only owner can approve");
+        token.approve(vaultRelayer, amount);
     }
-
-
 
     /// @param message The signed message.
     /// @param encodedSignature The encoded signature.
@@ -90,8 +87,8 @@ contract CurvedOrderInstance is EIP1271Verifier {
         require(signer != address(0), "GPv2: invalid ecdsa signature");
     }
 
-    function curvedOrderHash(CurvedOrder.Data calldata _curvedOrder) public returns (bytes32 _hash) {
-        bytes32 _hash = keccak256(abi.encode(_curvedOrder));
+    function curvedOrderHash(CurvedOrder.Data calldata _curvedOrder) public pure returns (bytes32 _hash) {
+        _hash = keccak256(abi.encode(_curvedOrder));
     }
 
     /**
