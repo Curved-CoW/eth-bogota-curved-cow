@@ -9,7 +9,6 @@ import "./interfaces/IERC20.sol";
 import {ICoWSwapOnchainOrders} from "./interfaces/ICoWSwapOnChainOrders.sol";
 import "./CurvedOrderInstance.sol";
 import "./interfaces/ICoWSwapSettlement.sol";
-import {console} from "./test/utils/Console.sol";
 
 contract CurvedOrders is ICoWSwapOnchainOrders {
     using GPv2Order for *;
