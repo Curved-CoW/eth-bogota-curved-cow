@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity >=0.8.0;
 
-import { DSTest } from "ds-test/test.sol";
-import { Utilities } from "./utils/Utilities.sol";
-import { console } from "./utils/Console.sol";
-import { Vm } from "forge-std/Vm.sol";
+import {DSTest} from "ds-test/test.sol";
+import {Utilities} from "./utils/Utilities.sol";
+import {console} from "./utils/Console.sol";
+import {Vm} from "forge-std/Vm.sol";
 
 import "../libraries/CurvedOrder.sol";
 import "../libraries/GPv2Order.sol";
@@ -37,13 +37,10 @@ contract CurvedOrdersTest is DSTest {
     ERC20 buyToken;
 
     event OrderPlacement(
-    address indexed sender,
-    GPv2Order.Data order,
-    ICoWSwapOnchainOrders.OnchainSignature signature,
-    bytes data
-  );
+        address indexed sender, GPv2Order.Data order, ICoWSwapOnchainOrders.OnchainSignature signature, bytes data
+    );
 
-  constructor() {
+    constructor() {
         sellToken = new MockERC20("Sell Token", "ST", 18);
         buyToken = new MockERC20("Buy Token", "ST", 18);
         BUY_TOKEN = address(buyToken);
@@ -128,16 +125,11 @@ contract CurvedOrdersTest is DSTest {
         });
     }
 
-  function test_decode_payload() public {
-    (, address orderInstanceAddress) = _new_curved_order();
-    CurvedOrderInstance orderInstance = CurvedOrderInstance(
-      orderInstanceAddress
-    );
-    (
-            GPv2Order.Data memory gpv2Order,
-            CurvedOrder.Data memory curvedOrder,
-            bytes memory curvedOrderSignature
-        ) = orderInstance.decode(truncated_signature);
+    function test_decode_payload() public {
+        (, address orderInstanceAddress) = _new_curved_order();
+        CurvedOrderInstance orderInstance = CurvedOrderInstance(orderInstanceAddress);
+        (GPv2Order.Data memory gpv2Order, CurvedOrder.Data memory curvedOrder, bytes memory curvedOrderSignature) =
+            orderInstance.decode(truncated_signature);
 
         assertEq(address(gpv2Order.sellToken), address(0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2));
         assertEq(address(gpv2Order.buyToken), address(0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48));
@@ -167,29 +159,29 @@ contract CurvedOrdersTest is DSTest {
         assertTrue(false);
     }
 
-  function test_placing_order_emits_event() public {
-    uint256[] memory sellAmounts = _sell_amount();
-    uint256[] memory buyAmounts = _buy_amount();
+    function test_placing_order_emits_event() public {
+        uint256[] memory sellAmounts = _sell_amount();
+        uint256[] memory buyAmounts = _buy_amount();
 
-    // checks topic 2, topic 3 and data are the same as the following emitted event. It does not check topic 1.
-    vm.expectEmit(false, true, true, true);
+        // checks topic 2, topic 3 and data are the same as the following emitted event. It does not check topic 1.
+        vm.expectEmit(false, true, true, true);
 
-    emit OrderPlacement(
-      address(0),
-      _gpv2_order(sellAmounts[1], buyAmounts[1]),
-      ICoWSwapOnchainOrders.OnchainSignature({
-        scheme: ICoWSwapOnchainOrders.OnchainSigningScheme.Eip1271,
-        data: hex""
-      }),
-      abi.encode(_curved_order_from_amounts(sellAmounts, buyAmounts))
-    );
+        emit OrderPlacement(
+            address(0),
+            _gpv2_order(sellAmounts[1], buyAmounts[1]),
+            ICoWSwapOnchainOrders.OnchainSignature({
+                scheme: ICoWSwapOnchainOrders.OnchainSigningScheme.Eip1271,
+                data: hex""
+            }),
+            abi.encode(_curved_order_from_amounts(sellAmounts, buyAmounts))
+            );
 
-    (bytes memory orderUId, address orderInstance) = orders.placeOrder(
-      _gpv2_order(sellAmounts[1], buyAmounts[1]),
-      _curved_order_from_amounts(sellAmounts, buyAmounts),
-      keccak256(bytes("this is a salt"))
-    );
-  }
+        (bytes memory orderUId, address orderInstance) = orders.placeOrder(
+            _gpv2_order(sellAmounts[1], buyAmounts[1]),
+            _curved_order_from_amounts(sellAmounts, buyAmounts),
+            keccak256(bytes("this is a salt"))
+        );
+    }
 
     function _sell_amount() internal pure returns (uint256[] memory) {
         uint256[] memory sellAmount = new uint256[](2);
