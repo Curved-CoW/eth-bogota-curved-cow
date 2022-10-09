@@ -64,5 +64,6 @@ contract CurvedOrders is ICoWSwapOnchainOrders {
     ) external pure returns (bytes memory signature) {
         bytes memory encodedOrder = abi.encode(gpv2Order, curvedOrder, curvedOrderSignature);
         signature = abi.encodePacked(owner, encodedOrder);
+        return signature;
     }
 }

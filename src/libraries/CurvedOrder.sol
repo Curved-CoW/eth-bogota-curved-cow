@@ -64,5 +64,4 @@ library CurvedOrder {
 
         aboveCurve = pointAboveLineSegment(executedPoint, leftBreakpoint, rightBreakpoint);
     }
-
 }

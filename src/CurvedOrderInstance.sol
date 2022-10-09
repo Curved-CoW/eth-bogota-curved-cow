@@ -77,7 +77,7 @@ contract CurvedOrderInstance is EIP1271Verifier {
         require(signer != address(0), "GPv2: invalid ecdsa signature");
     }
 
-    function curvedOrderHash(CurvedOrder.Data calldata _curvedOrder) public returns (bytes32 _hash){
+    function curvedOrderHash(CurvedOrder.Data calldata _curvedOrder) public returns (bytes32 _hash) {
         bytes32 _hash = keccak256(abi.encode(_curvedOrder));
     }
 
@@ -92,15 +92,16 @@ contract CurvedOrderInstance is EIP1271Verifier {
         console.log("signature");
         console.logBytes(_curvedOrderSignature);
 
-        bytes memory msg_bytes = abi.encode( _curvedOrder.sellToken, 
-        _curvedOrder.buyToken,
-        _curvedOrder.receiver,
-        _curvedOrder.sellAmount,
-        _curvedOrder.buyAmount,
-        _curvedOrder.validTo,
-        _curvedOrder.sellTokenBalance,
-        _curvedOrder.buyTokenBalance
-         );
+        bytes memory msg_bytes = abi.encode(
+            _curvedOrder.sellToken,
+            _curvedOrder.buyToken,
+            _curvedOrder.receiver,
+            _curvedOrder.sellAmount,
+            _curvedOrder.buyAmount,
+            _curvedOrder.validTo,
+            _curvedOrder.sellTokenBalance,
+            _curvedOrder.buyTokenBalance
+        );
 
         bytes32 msg_hash = keccak256(msg_bytes);
         bytes memory hex_prefix = hex"19457468657265756d205369676e6564204d6573736167653a0a3332";

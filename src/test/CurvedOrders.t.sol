@@ -24,6 +24,7 @@ contract CurvedOrdersTest is DSTest {
     address constant RECEIVER = 0x0000000000000000000000000000000000000002;
     bytes32 constant BALANCE_ERC20 = hex"5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9";
     bytes32 constant KIND_SELL = hex"f3b277728b3fee749481eb3e0b3b48980dbbab78658fc419025cb16eee346775";
+    address constant OWNER = 0xd19772540a685424DD127f9aE6AE38DBC3cf56FB;
 
     address constant SETTLEMENT = 0x9008D19f58AAbD9eD0D60971565AA8510560ab41;
 
@@ -53,6 +54,9 @@ contract CurvedOrdersTest is DSTest {
         users = utils.createUsers(5);
         ICoWSwapSettlement settlement = new MockCowSwapSettlement();
         orders = new CurvedOrders(settlement);
+
+        sellToken.transfer(OWNER, 500_000 ether);
+        vm.prank(OWNER);
         sellToken.approve(address(orders), type(uint256).max);
     }
 
