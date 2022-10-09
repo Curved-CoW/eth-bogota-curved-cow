@@ -39,11 +39,7 @@ contract CurvedOrderInstance is EIP1271Verifier {
     /// GPv2 contracts.
     bytes32 public immutable domainSeparator;
 
-    constructor(
-        address owner_,
-        IERC20 _sellToken,
-        ICoWSwapSettlement _settlement
-    ) {
+    constructor(address owner_, IERC20 _sellToken, ICoWSwapSettlement _settlement) {
         owner = owner_;
         sellToken = _sellToken;
         settlement = _settlement;
@@ -91,8 +87,8 @@ contract CurvedOrderInstance is EIP1271Verifier {
         require(signer != address(0), "GPv2: invalid ecdsa signature");
     }
 
-    function curvedOrderHash(CurvedOrder.Data calldata _curvedOrder) public returns (bytes32 _hash) {
-        bytes32 _hash = keccak256(abi.encode(_curvedOrder));
+    function curvedOrderHash(CurvedOrder.Data calldata _curvedOrder) public pure returns (bytes32 _hash) {
+        _hash = keccak256(abi.encode(_curvedOrder));
     }
 
     /**
@@ -101,11 +97,8 @@ contract CurvedOrderInstance is EIP1271Verifier {
      * @param _payload encoded payload with metadata including `GPv2Order`, `CurvedOrder`, and `signature`. This is usually referred to as a signature in the EIP, but we're calling it payload here to differentiate between cryptographic signatures which have different meaning. This payload is encoded as follows abi.encoded(GPv2Order,CurvedOrder,bytes32). The bytes32 represents the signature of a signed curved order to verify the order was infact submitted by the LP.
      */
     function isValidSignature(bytes32 _hash, bytes calldata _payload) external view returns (bytes4 magicValue) {
-        (
-            GPv2Order.Data memory _gpv2Order,
-            CurvedOrder.Data memory _curvedOrder,
-            bytes memory _curvedOrderSignature
-        ) = decode(_payload);
+        (GPv2Order.Data memory _gpv2Order, CurvedOrder.Data memory _curvedOrder, bytes memory _curvedOrderSignature) =
+            decode(_payload);
 
         bytes memory msg_bytes = abi.encode(
             _curvedOrder.sellToken,
@@ -138,10 +131,8 @@ contract CurvedOrderInstance is EIP1271Verifier {
             bytes memory _curvedOrderSignature
         )
     {
-        (_gpv2Order, _curvedOrder, _curvedOrderSignature) = abi.decode(
-            _payload,
-            (GPv2Order.Data, CurvedOrder.Data, bytes)
-        );
+        (_gpv2Order, _curvedOrder, _curvedOrderSignature) =
+            abi.decode(_payload, (GPv2Order.Data, CurvedOrder.Data, bytes));
     }
 
     /**

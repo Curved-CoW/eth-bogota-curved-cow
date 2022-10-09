@@ -39,10 +39,7 @@ contract CurvedOrdersTest is DSTest {
     ERC20 buyToken;
 
     event OrderPlacement(
-        address indexed sender,
-        GPv2Order.Data order,
-        ICoWSwapOnchainOrders.OnchainSignature signature,
-        bytes data
+        address indexed sender, GPv2Order.Data order, ICoWSwapOnchainOrders.OnchainSignature signature, bytes data
     );
 
     constructor() {
@@ -64,8 +61,8 @@ contract CurvedOrdersTest is DSTest {
     }
 
     function test_balances_of_msg_sender() public {
-        assertEq(IERC20(SELL_TOKEN).balanceOf(address(this)), 500_000 * 10**18);
-        assertEq(IERC20(BUY_TOKEN).balanceOf(address(this)), 1_000_000 * 10**18);
+        assertEq(IERC20(SELL_TOKEN).balanceOf(address(this)), 500_000 * 10 ** 18);
+        assertEq(IERC20(BUY_TOKEN).balanceOf(address(this)), 1_000_000 * 10 ** 18);
     }
 
     function test_constructor() public {
@@ -77,13 +74,10 @@ contract CurvedOrdersTest is DSTest {
 
         CurvedOrderInstance orderInstance = CurvedOrderInstance(orderInstanceAddress);
 
-        (
-            GPv2Order.Data memory gpv2Order,
-            CurvedOrder.Data memory curvedOrder,
-            bytes memory curvedOrderSignature
-        ) = orderInstance.decode(truncated_signature);
+        (GPv2Order.Data memory gpv2Order, CurvedOrder.Data memory curvedOrder, bytes memory curvedOrderSignature) =
+            orderInstance.decode(truncated_signature);
 
-        bytes memory signature = orderInstance.generateSignature(gpv2Order, curvedOrder, curvedOrderSignature);
+        orderInstance.generateSignature(gpv2Order, curvedOrder, curvedOrderSignature);
 
         (
             GPv2Order.Data memory gpv2OrderDecoded,
@@ -139,21 +133,20 @@ contract CurvedOrdersTest is DSTest {
     }
 
     function _gpv2_order(uint256 sellAmount, uint256 buyAmount) internal view returns (GPv2Order.Data memory) {
-        return
-            GPv2Order.Data({
-                sellToken: IERC20(SELL_TOKEN),
-                buyToken: IERC20(BUY_TOKEN),
-                receiver: RECEIVER,
-                sellAmount: sellAmount,
-                buyAmount: buyAmount,
-                validTo: 500,
-                appData: 0,
-                feeAmount: 0,
-                kind: KIND_SELL,
-                partiallyFillable: true,
-                sellTokenBalance: BALANCE_ERC20,
-                buyTokenBalance: BALANCE_ERC20
-            });
+        return GPv2Order.Data({
+            sellToken: IERC20(SELL_TOKEN),
+            buyToken: IERC20(BUY_TOKEN),
+            receiver: RECEIVER,
+            sellAmount: sellAmount,
+            buyAmount: buyAmount,
+            validTo: 500,
+            appData: 0,
+            feeAmount: 0,
+            kind: KIND_SELL,
+            partiallyFillable: true,
+            sellTokenBalance: BALANCE_ERC20,
+            buyTokenBalance: BALANCE_ERC20
+        });
     }
 
     function test_decode_payload() public {
@@ -170,14 +163,13 @@ contract CurvedOrdersTest is DSTest {
         (, address orderInstanceAddress) = _new_curved_order();
         CurvedOrderInstance orderInstance = CurvedOrderInstance(orderInstanceAddress);
 
-        bytes
-            memory signature = hex"000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb480000000000000000000000009008d19f58aabd9ed0d60971565aa8510560ab410000000000000000000000000000000000000000000000001bc16d674ec8000000000000000000000000000000000000000000000000008d0020474fb70000000000000000000000000000000000000000000000000000000000000068687f1b00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002f3b277728b3fee749481eb3e0b3b48980dbbab78658fc419025cb16eee34677500000000000000000000000000000000000000000000000000000000000000005a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc95a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc900000000000000000000000000000000000000000000000000000000000001c00000000000000000000000000000000000000000000000000000000000000380000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb480000000000000000000000009008d19f58aabd9ed0d60971565aa8510560ab41000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000001600000000000000000000000000000000000000000000000000000000068687f1b5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc95a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc900000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000de0b6b3a76400000000000000000000000000000000000000000000000000001bc16d674ec800000000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000046791fc84e07d0000000000000000000000000000000000000000000000000008d0020474fb7000000000000000000000000000000000000000000000000000000000000000000004178f2bf6a9d9acc2ef4ccf67b46d6a59a84ea55f608f5a00f98056a8ad3a78f3e204843e091220eda7d4e57c750148ac79923134f3e27994684f3282f834377921c00000000000000000000000000000000000000000000000000000000000000";
+        bytes memory signature =
+            hex"000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb480000000000000000000000009008d19f58aabd9ed0d60971565aa8510560ab410000000000000000000000000000000000000000000000001bc16d674ec8000000000000000000000000000000000000000000000000008d0020474fb70000000000000000000000000000000000000000000000000000000000000068687f1b00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002f3b277728b3fee749481eb3e0b3b48980dbbab78658fc419025cb16eee34677500000000000000000000000000000000000000000000000000000000000000005a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc95a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc900000000000000000000000000000000000000000000000000000000000001c00000000000000000000000000000000000000000000000000000000000000380000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb480000000000000000000000009008d19f58aabd9ed0d60971565aa8510560ab41000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000001600000000000000000000000000000000000000000000000000000000068687f1b5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc95a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc900000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000de0b6b3a76400000000000000000000000000000000000000000000000000001bc16d674ec800000000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000046791fc84e07d0000000000000000000000000000000000000000000000000008d0020474fb7000000000000000000000000000000000000000000000000000000000000000000004178f2bf6a9d9acc2ef4ccf67b46d6a59a84ea55f608f5a00f98056a8ad3a78f3e204843e091220eda7d4e57c750148ac79923134f3e27994684f3282f834377921c00000000000000000000000000000000000000000000000000000000000000";
         (
-            GPv2Order.Data memory _gpv2Order,
-            CurvedOrder.Data memory _curvedOrder,
-            bytes memory _curvedOrderSignature
+            GPv2Order.Data memory _gpv2Order, /*CurvedOrder.Data memory _curvedOrder*/ /*bytes memory _curvedOrderSignature*/
+            ,
         ) = orderInstance.decode(signature);
-        bytes32 _hash = hex"97504f3ee117f8a8d9ed1957d60748b3806b4eff5c426e11591f2dc43b401680";
+        // bytes32 _hash = hex"97504f3ee117f8a8d9ed1957d60748b3806b4eff5c426e11591f2dc43b401680";
         bytes32 hash = GPv2Order.hash(_gpv2Order, orderInstance.domainSeparator());
         console.log("Here comes the hash");
         console.logBytes32(hash);
@@ -200,9 +192,9 @@ contract CurvedOrdersTest is DSTest {
                 data: hex""
             }),
             abi.encode(_curved_order_from_amounts(sellAmounts, buyAmounts))
-        );
+            );
 
-        (bytes memory orderUId, address orderInstance) = _new_curved_order();
+        _new_curved_order();
     }
 
     function _sell_amount() internal pure returns (uint256[] memory) {
