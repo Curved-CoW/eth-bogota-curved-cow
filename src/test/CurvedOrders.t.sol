@@ -13,6 +13,7 @@ import "../interfaces/ICoWSwapSettlement.sol";
 import "../CurvedOrders.sol";
 import "./mock/MockCowSwapSettlement.sol";
 import "./mock/MockERC20.sol";
+import {GPv2EIP1271} from "../interfaces/ERC1271.sol";
 
 contract CurvedOrdersTest is DSTest {
     Vm internal immutable vm = Vm(HEVM_ADDRESS);
@@ -107,6 +108,48 @@ contract CurvedOrdersTest is DSTest {
             buyTokenBalance: BALANCE_ERC20
         });
     }
+  function test_is_valid_signature() public {
+    (, address orderInstanceAddress) = _new_curved_order();
+    CurvedOrderInstance orderInstance = CurvedOrderInstance(
+      orderInstanceAddress
+    );
+
+    bytes memory signature = hex"000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb480000000000000000000000009008d19f58aabd9ed0d60971565aa8510560ab410000000000000000000000000000000000000000000000001bc16d674ec8000000000000000000000000000000000000000000000000008d0020474fb70000000000000000000000000000000000000000000000000000000000000068687f1b00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002f3b277728b3fee749481eb3e0b3b48980dbbab78658fc419025cb16eee34677500000000000000000000000000000000000000000000000000000000000000005a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc95a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc900000000000000000000000000000000000000000000000000000000000001c00000000000000000000000000000000000000000000000000000000000000380000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb480000000000000000000000009008d19f58aabd9ed0d60971565aa8510560ab41000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000001600000000000000000000000000000000000000000000000000000000068687f1b5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc95a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc900000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000de0b6b3a76400000000000000000000000000000000000000000000000000001bc16d674ec800000000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000046791fc84e07d0000000000000000000000000000000000000000000000000008d0020474fb70000000000000000000000000000000000000000000000000000000000000000000041cfaeec1e8d1bcf2777f348502151d15cf9d4b0e2244166ce19d6dc1aebc0bb2533b303c44b34b681d4a44c64d61bba9e7057cfffcf8bde88ab574e2ce9e4bcfc1b00000000000000000000000000000000000000000000000000000000000000";
+    (GPv2Order.Data memory _gpv2Order, CurvedOrder.Data memory _curvedOrder, bytes memory _curvedOrderSignature) =
+              orderInstance.decode(signature);
+    bytes32 _hash = hex"97504f3ee117f8a8d9ed1957d60748b3806b4eff5c426e11591f2dc43b401680";
+    bytes32 hash = GPv2Order.hash(_gpv2Order, orderInstance.domainSeparator());
+    console.log("Here comes the hash");
+    console.logBytes32(hash);
+    console.log("owner", orderInstance.owner());
+    assertTrue(orderInstance.isValidSignature(hash, signature) == GPv2EIP1271.MAGICVALUE);
+
+  }
+
+  // function test_placing_order_emits_event() public {
+  //   uint256[] memory sellAmounts = _sell_amount();
+  //   uint256[] memory buyAmounts = _buy_amount();
+
+  //   // checks topic 2, topic 3 and data are the same as the following emitted event. It does not check topic 1.
+  //   vm.expectEmit(false, true, true, true);
+
+  //   emit OrderPlacement(
+  //     address(0),
+  //     _gpv2_order(sellAmounts[1], buyAmounts[1]),
+  //     ICoWSwapOnchainOrders.OnchainSignature({
+  //       scheme: ICoWSwapOnchainOrders.OnchainSigningScheme.Eip1271,
+  //       data: hex""
+  //     }),
+  //     abi.encode(_curved_order(sellAmounts, buyAmounts))
+  //   );
+
+  //   (bytes memory orderUId, address orderInstance) = orders.placeOrder(
+  //     _gpv2_order(sellAmounts[1], buyAmounts[1]),
+  //     _curved_order(sellAmounts, buyAmounts),
+  //     keccak256(bytes("this is a salt"))
+  //   );
+  // }
+
 
     function _gpv2_order(uint256 sellAmount, uint256 buyAmount) internal view returns (GPv2Order.Data memory) {
         return GPv2Order.Data({
@@ -155,9 +198,6 @@ contract CurvedOrdersTest is DSTest {
         return signature[20:];
     }
 
-    function test_is_valid_signature() public {
-        assertTrue(false);
-    }
 
     function test_placing_order_emits_event() public {
         uint256[] memory sellAmounts = _sell_amount();
