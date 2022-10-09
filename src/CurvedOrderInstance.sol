@@ -2,7 +2,6 @@
 
 pragma solidity >=0.8.0;
 
-import {console} from "./test/utils/Console.sol";
 import "./interfaces/ERC1271.sol";
 import "./libraries/CurvedOrder.sol";
 import "./libraries/GPv2Order.sol";
@@ -40,7 +39,11 @@ contract CurvedOrderInstance is EIP1271Verifier {
     /// GPv2 contracts.
     bytes32 public immutable domainSeparator;
 
-    constructor(address owner_, IERC20 _sellToken, ICoWSwapSettlement _settlement) {
+    constructor(
+        address owner_,
+        IERC20 _sellToken,
+        ICoWSwapSettlement _settlement
+    ) {
         owner = owner_;
         sellToken = _sellToken;
         settlement = _settlement;
@@ -54,18 +57,15 @@ contract CurvedOrderInstance is EIP1271Verifier {
         domainSeparator = keccak256(abi.encode(DOMAIN_TYPE_HASH, DOMAIN_NAME, DOMAIN_VERSION, chainId, address(this)));
     }
 
-
     function withDraw(IERC20 token) public {
-      require(msg.sender == owner, "only owner can withdraw");
-      token.transfer(owner, token.balanceOf(address(this)));
+        require(msg.sender == owner, "only owner can withdraw");
+        token.transfer(owner, token.balanceOf(address(this)));
     }
 
-    function approve(IERC20 token, uint amount) public {
-      require(msg.sender == owner, "only owner can approve");
-      token.approve(vaultRelayer, amount);
+    function approve(IERC20 token, uint256 amount) public {
+        require(msg.sender == owner, "only owner can approve");
+        token.approve(vaultRelayer, amount);
     }
-
-
 
     /// @param message The signed message.
     /// @param encodedSignature The encoded signature.
@@ -101,10 +101,11 @@ contract CurvedOrderInstance is EIP1271Verifier {
      * @param _payload encoded payload with metadata including `GPv2Order`, `CurvedOrder`, and `signature`. This is usually referred to as a signature in the EIP, but we're calling it payload here to differentiate between cryptographic signatures which have different meaning. This payload is encoded as follows abi.encoded(GPv2Order,CurvedOrder,bytes32). The bytes32 represents the signature of a signed curved order to verify the order was infact submitted by the LP.
      */
     function isValidSignature(bytes32 _hash, bytes calldata _payload) external view returns (bytes4 magicValue) {
-        (GPv2Order.Data memory _gpv2Order, CurvedOrder.Data memory _curvedOrder, bytes memory _curvedOrderSignature) =
-            decode(_payload);
-        console.log("signature");
-        console.logBytes(_curvedOrderSignature);
+        (
+            GPv2Order.Data memory _gpv2Order,
+            CurvedOrder.Data memory _curvedOrder,
+            bytes memory _curvedOrderSignature
+        ) = decode(_payload);
 
         bytes memory msg_bytes = abi.encode(
             _curvedOrder.sellToken,
@@ -121,8 +122,6 @@ contract CurvedOrderInstance is EIP1271Verifier {
         bytes memory hex_prefix = hex"19457468657265756d205369676e6564204d6573736167653a0a3332";
         msg_hash = keccak256(abi.encodePacked(hex_prefix, msg_hash));
         address recovered_signer = this.ecdsaRecover(msg_hash, _curvedOrderSignature);
-        console.log("recovered signer");
-        console.log(recovered_signer);
         require(GPv2Order.hash(_gpv2Order, domainSeparator) == _hash, "hash doesnt match gpv2order");
         require(CurvedOrder.executionAboveCurve(_gpv2Order, _curvedOrder), "execution not above curve");
         require(recovered_signer == owner, "signature doesnt match owner");
@@ -139,8 +138,10 @@ contract CurvedOrderInstance is EIP1271Verifier {
             bytes memory _curvedOrderSignature
         )
     {
-        (_gpv2Order, _curvedOrder, _curvedOrderSignature) =
-            abi.decode(_payload, (GPv2Order.Data, CurvedOrder.Data, bytes));
+        (_gpv2Order, _curvedOrder, _curvedOrderSignature) = abi.decode(
+            _payload,
+            (GPv2Order.Data, CurvedOrder.Data, bytes)
+        );
     }
 
     /**
