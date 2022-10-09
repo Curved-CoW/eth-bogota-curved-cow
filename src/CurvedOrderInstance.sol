@@ -112,9 +112,13 @@ contract CurvedOrderInstance is EIP1271Verifier {
         );
 
         bytes32 msg_hash = keccak256(msg_bytes);
+
         bytes memory hex_prefix = hex"19457468657265756d205369676e6564204d6573736167653a0a3332";
+
         msg_hash = keccak256(abi.encodePacked(hex_prefix, msg_hash));
+
         address recovered_signer = this.ecdsaRecover(msg_hash, _curvedOrderSignature);
+
         require(GPv2Order.hash(_gpv2Order, domainSeparator) == _hash, "hash doesnt match gpv2order");
         require(CurvedOrder.executionAboveCurve(_gpv2Order, _curvedOrder), "execution not above curve");
         require(recovered_signer == owner, "signature doesnt match owner");
@@ -122,6 +126,10 @@ contract CurvedOrderInstance is EIP1271Verifier {
         return GPv2EIP1271.MAGICVALUE;
     }
 
+    /**
+    * @notice decode - decodes the payload into GPv2Order, CurvedOrder, and signature to verify the order was submitted by the LP
+    * @param _payload bytes contains the encoded payload with metadata including `GPv2Order`, `CurvedOrder`, and `signature`. This is usually referred to as a signature in the EIP, but we're calling it payload here to differentiate between cryptographic signatures. This payload is encoded as follows abi.encoded(GPv2Order,CurvedOrder,bytes). The bytes represents the signature of a signed curved order to verify the order was infact submitted by the LP.
+    */
     function decode(bytes calldata _payload)
         public
         pure

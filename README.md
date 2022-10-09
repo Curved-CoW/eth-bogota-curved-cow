@@ -13,3 +13,5 @@ Curved Orders are a smart order type for CoW protocol. They allow the submitter 
 1. update `src/scripts/placeOrder.s.sol` with order configuration, and then 
 2. run `forge script placeOrder --fork-url https://eth-mainnet.alchemyapi.io/v2/xxxxxxxxx`
 
+> ! The order factory contract is deployed on gorli & mainnet, but should probably not be used for production purposes
+

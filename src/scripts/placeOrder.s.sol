@@ -55,9 +55,13 @@ contract placeOrder is Script {
             buyTokenBalance: BALANCE_ERC20
         });
 
-        
+        // signing is currently implemented in another python script, but this signed order can be shared with the solver offline for it to generate a valid signature for the GPv2Trade
+        // vm.sign(ownerPrivateKey, abi.encode(curvedOrder));
+
         IERC20(SELL_TOKEN).approve(ORDER_FACTORY, type(uint256).max);
-        (,address instance) = CurvedOrders(ORDER_FACTORY).placeOrder(gpv2Order, curvedOrder, bytes32(uint256(block.timestamp)));
+        
+        (, address instance) =
+            CurvedOrders(ORDER_FACTORY).placeOrder(gpv2Order, curvedOrder, bytes32(uint256(block.timestamp)));
 
         console.log("Submitted a Curved Order @ ", instance);
         vm.stopBroadcast();
