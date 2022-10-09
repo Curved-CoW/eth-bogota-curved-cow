@@ -15,3 +15,5 @@ Curved Orders are a smart order type for CoW protocol. They allow the submitter 
 
 > ! The order factory contract is deployed on gorli & mainnet, but should probably not be used for production purposes
 
+A signed curved order can then be shared with solvers on CoW for execution.
+

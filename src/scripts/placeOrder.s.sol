@@ -59,7 +59,7 @@ contract placeOrder is Script {
         // vm.sign(ownerPrivateKey, abi.encode(curvedOrder));
 
         IERC20(SELL_TOKEN).approve(ORDER_FACTORY, type(uint256).max);
-        
+
         (, address instance) =
             CurvedOrders(ORDER_FACTORY).placeOrder(gpv2Order, curvedOrder, bytes32(uint256(block.timestamp)));
 

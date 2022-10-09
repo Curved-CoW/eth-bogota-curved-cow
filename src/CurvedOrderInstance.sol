@@ -8,87 +8,23 @@ import "./libraries/GPv2Order.sol";
 import "./interfaces/IERC20.sol";
 import {GPv2EIP1271} from "./interfaces/ERC1271.sol";
 import "./interfaces/ICoWSwapSettlement.sol";
+import "./mixins/GPv2Signing.sol";
 
-contract CurvedOrderInstance is EIP1271Verifier {
+contract CurvedOrderInstance is EIP1271Verifier, GPv2Signing {
     ICoWSwapSettlement public immutable settlement;
     address private constant vaultRelayer = 0xC92E8bdf79f0507f65a392b0ab4667716BFE0110;
 
     address public immutable owner;
     IERC20 public immutable sellToken;
-    CurvedOrder.Data public curvedOrder;
-
-    bytes32 public _curvedOrderHash;
-    uint256 private constant ECDSA_SIGNATURE_LENGTH = 65;
-
-    bytes32 private constant DOMAIN_TYPE_HASH =
-        keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)");
 
     /// @dev The EIP-712 domain name used for computing the domain separator.
-    bytes32 private constant DOMAIN_NAME = keccak256("Gnosis Protocol");
-
-    /// @dev The EIP-712 domain version used for computing the domain separator.
-    bytes32 private constant DOMAIN_VERSION = keccak256("v2");
-
-    /// @dev Marker value indicating an order is pre-signed.
-    uint256 private constant PRE_SIGNED = uint256(keccak256("GPv2Signing.Scheme.PreSign"));
-
-    /// @dev The domain separator used for signing orders that gets mixed in
-    /// making signatures for different domains incompatible. This domain
-    /// separator is computed following the EIP-712 standard and has replay
-    /// protection mixed in so that signed orders are only valid for specific
-    /// GPv2 contracts.
-    bytes32 public immutable domainSeparator;
+    bytes32 private constant DOMAIN_NAME = keccak256("ETH Bogota Curved Order");
 
     constructor(address owner_, IERC20 _sellToken, ICoWSwapSettlement _settlement) {
         owner = owner_;
         sellToken = _sellToken;
         settlement = _settlement;
-        // _sellToken.approve(_settlement.vaultRelayer(), type(uint256).max);
-        uint256 chainId;
-        // solhint-disable-next-line no-inline-assembly
-        assembly {
-            chainId := chainid()
-        }
-
-        domainSeparator = keccak256(abi.encode(DOMAIN_TYPE_HASH, DOMAIN_NAME, DOMAIN_VERSION, chainId, address(this)));
-    }
-
-    function withDraw(IERC20 token) public {
-        require(msg.sender == owner, "only owner can withdraw");
-        token.transfer(owner, token.balanceOf(address(this)));
-    }
-
-    function approve(IERC20 token, uint256 amount) public {
-        require(msg.sender == owner, "only owner can approve");
-        token.approve(vaultRelayer, amount);
-    }
-
-    /// @param message The signed message.
-    /// @param encodedSignature The encoded signature.
-    function ecdsaRecover(bytes32 message, bytes calldata encodedSignature) public pure returns (address signer) {
-        require(encodedSignature.length == ECDSA_SIGNATURE_LENGTH, "GPv2: malformed ecdsa signature");
-
-        bytes32 r;
-        bytes32 s;
-        uint8 v;
-
-        // NOTE: Use assembly to efficiently decode signature data.
-        // solhint-disable-next-line no-inline-assembly
-        assembly {
-            // r = uint256(encodedSignature[0:32])
-            r := calldataload(encodedSignature.offset)
-            // s = uint256(encodedSignature[32:64])
-            s := calldataload(add(encodedSignature.offset, 32))
-            // v = uint8(encodedSignature[64])
-            v := shr(248, calldataload(add(encodedSignature.offset, 64)))
-        }
-
-        signer = ecrecover(message, v, r, s);
-        require(signer != address(0), "GPv2: invalid ecdsa signature");
-    }
-
-    function curvedOrderHash(CurvedOrder.Data calldata _curvedOrder) public pure returns (bytes32 _hash) {
-        _hash = keccak256(abi.encode(_curvedOrder));
+        _sellToken.approve(_settlement.vaultRelayer(), type(uint256).max);
     }
 
     /**
@@ -127,9 +63,9 @@ contract CurvedOrderInstance is EIP1271Verifier {
     }
 
     /**
-    * @notice decode - decodes the payload into GPv2Order, CurvedOrder, and signature to verify the order was submitted by the LP
-    * @param _payload bytes contains the encoded payload with metadata including `GPv2Order`, `CurvedOrder`, and `signature`. This is usually referred to as a signature in the EIP, but we're calling it payload here to differentiate between cryptographic signatures. This payload is encoded as follows abi.encoded(GPv2Order,CurvedOrder,bytes). The bytes represents the signature of a signed curved order to verify the order was infact submitted by the LP.
-    */
+     * @notice decode - decodes the payload into GPv2Order, CurvedOrder, and signature to verify the order was submitted by the LP
+     * @param _payload bytes contains the encoded payload with metadata including `GPv2Order`, `CurvedOrder`, and `signature`. This is usually referred to as a signature in the EIP, but we're calling it payload here to differentiate between cryptographic signatures. This payload is encoded as follows abi.encoded(GPv2Order,CurvedOrder,bytes). The bytes represents the signature of a signed curved order to verify the order was infact submitted by the LP.
+     */
     function decode(bytes calldata _payload)
         public
         pure
@@ -156,5 +92,19 @@ contract CurvedOrderInstance is EIP1271Verifier {
     ) external view returns (bytes memory signature) {
         bytes memory encodedCurvedOrder = abi.encode(_gpv2Order, _curvedOrder, _curvedOrderSignature);
         signature = abi.encodePacked(address(this), encodedCurvedOrder);
+    }
+
+    function withdraw(IERC20 token) public {
+        require(msg.sender == owner, "only owner can withdraw");
+        token.transfer(owner, token.balanceOf(address(this)));
+    }
+
+    function approve(IERC20 token, uint256 amount) public {
+        require(msg.sender == owner, "only owner can approve");
+        token.approve(vaultRelayer, amount);
+    }
+
+    function curvedOrderHash(CurvedOrder.Data calldata _curvedOrder) public pure returns (bytes32 _hash) {
+        _hash = keccak256(abi.encode(_curvedOrder));
     }
 }
