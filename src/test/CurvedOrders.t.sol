@@ -83,6 +83,7 @@ contract CurvedOrdersTest is DSTest {
         uint256[] memory sellAmounts = _sell_amount();
         uint256[] memory buyAmounts = _buy_amount();
 
+        vm.prank(0xd19772540a685424DD127f9aE6AE38DBC3cf56FB);
         (bytes memory orderUid, address orderInstance) = orders.placeOrder(
             _gpv2_order(sellAmounts[1], buyAmounts[1]),
             _curved_order_from_amounts(sellAmounts, buyAmounts),
