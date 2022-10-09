@@ -61,7 +61,7 @@ contract CurvedOrdersTest is DSTest {
     }
 
     function test_balances_of_msg_sender() public {
-        assertEq(IERC20(SELL_TOKEN).balanceOf(address(this)), 1_000_000 * 10 ** 18);
+        assertEq(IERC20(SELL_TOKEN).balanceOf(address(this)), 500_000 * 10 ** 18);
         assertEq(IERC20(BUY_TOKEN).balanceOf(address(this)), 1_000_000 * 10 ** 18);
     }
 
