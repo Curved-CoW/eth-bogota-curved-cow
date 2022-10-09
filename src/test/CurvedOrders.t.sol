@@ -70,7 +70,29 @@ contract CurvedOrdersTest is DSTest {
     }
 
     function test_generate_payload_v2() public {
-        assertTrue(false);
+        (, address orderInstanceAddress) = _new_curved_order();
+
+        CurvedOrderInstance orderInstance = CurvedOrderInstance(orderInstanceAddress);
+
+        (GPv2Order.Data memory gpv2Order, CurvedOrder.Data memory curvedOrder, bytes memory curvedOrderSignature) =
+            orderInstance.decode(truncated_signature);
+
+        bytes memory signature = orderInstance.generateSignature(gpv2Order, curvedOrder, curvedOrderSignature);
+
+        (
+            GPv2Order.Data memory gpv2OrderDecoded,
+            CurvedOrder.Data memory curvedOrderDecoded,
+            bytes memory curvedOrderSignatureDecoded
+        ) = abi.decode(truncated_signature, (GPv2Order.Data, CurvedOrder.Data, bytes));
+
+        console.log(address(gpv2OrderDecoded.sellToken));
+
+        assertEq(uint256(keccak256(abi.encode(gpv2Order))), uint256(keccak256(abi.encode(gpv2Order))));
+        assertEq(uint256(keccak256(abi.encode(curvedOrder))), uint256(keccak256(abi.encode(curvedOrderDecoded))));
+        assertEq(
+            uint256(keccak256(abi.encode(curvedOrderSignature))),
+            uint256(keccak256(abi.encode(curvedOrderSignatureDecoded)))
+        );
     }
 
     function test_creates_curved_order() public {
@@ -152,29 +174,29 @@ contract CurvedOrdersTest is DSTest {
         assertTrue(orderInstance.isValidSignature(hash, signature) == GPv2EIP1271.MAGICVALUE);
     }
 
-    // function test_placing_order_emits_event() public {
-    //   uint256[] memory sellAmounts = _sell_amount();
-    //   uint256[] memory buyAmounts = _buy_amount();
+    function test_placing_order_emits_event() public {
+        uint256[] memory sellAmounts = _sell_amount();
+        uint256[] memory buyAmounts = _buy_amount();
 
-    //   // checks topic 2, topic 3 and data are the same as the following emitted event. It does not check topic 1.
-    //   vm.expectEmit(false, true, true, true);
+        // checks topic 2, topic 3 and data are the same as the following emitted event. It does not check topic 1.
+        vm.expectEmit(false, true, true, true);
 
-    //   emit OrderPlacement(
-    //     address(0),
-    //     _gpv2_order(sellAmounts[1], buyAmounts[1]),
-    //     ICoWSwapOnchainOrders.OnchainSignature({
-    //       scheme: ICoWSwapOnchainOrders.OnchainSigningScheme.Eip1271,
-    //       data: hex""
-    //     }),
-    //     abi.encode(_curved_order(sellAmounts, buyAmounts))
-    //   );
+        emit OrderPlacement(
+            address(0),
+            _gpv2_order(sellAmounts[1], buyAmounts[1]),
+            ICoWSwapOnchainOrders.OnchainSignature({
+                scheme: ICoWSwapOnchainOrders.OnchainSigningScheme.Eip1271,
+                data: hex""
+            }),
+            abi.encode(_curved_order_from_amounts(sellAmounts, buyAmounts))
+            );
 
-    //   (bytes memory orderUId, address orderInstance) = orders.placeOrder(
-    //     _gpv2_order(sellAmounts[1], buyAmounts[1]),
-    //     _curved_order(sellAmounts, buyAmounts),
-    //     keccak256(bytes("this is a salt"))
-    //   );
-    // }
+        (bytes memory orderUId, address orderInstance) = orders.placeOrder(
+            _gpv2_order(sellAmounts[1], buyAmounts[1]),
+            _curved_order_from_amounts(sellAmounts, buyAmounts),
+            keccak256(bytes("this is a salt"))
+        );
+    }
 
     function _sell_amount() internal pure returns (uint256[] memory) {
         uint256[] memory sellAmount = new uint256[](2);
