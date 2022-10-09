@@ -187,7 +187,7 @@ contract CurvedOrdersTest is DSTest {
         vm.expectEmit(false, true, true, true);
 
         emit OrderPlacement(
-            address(0),
+            OWNER,
             _gpv2_order(sellAmounts[1], buyAmounts[1]),
             ICoWSwapOnchainOrders.OnchainSignature({
                 scheme: ICoWSwapOnchainOrders.OnchainSigningScheme.Eip1271,
@@ -196,11 +196,7 @@ contract CurvedOrdersTest is DSTest {
             abi.encode(_curved_order_from_amounts(sellAmounts, buyAmounts))
             );
 
-        (bytes memory orderUId, address orderInstance) = orders.placeOrder(
-            _gpv2_order(sellAmounts[1], buyAmounts[1]),
-            _curved_order_from_amounts(sellAmounts, buyAmounts),
-            keccak256(bytes("this is a salt"))
-        );
+        (bytes memory orderUId, address orderInstance) = _new_curved_order();
     }
 
     function _sell_amount() internal pure returns (uint256[] memory) {
