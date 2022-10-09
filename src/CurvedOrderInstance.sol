@@ -39,7 +39,10 @@ contract CurvedOrderInstance is EIP1271Verifier {
     /// GPv2 contracts.
     bytes32 public immutable domainSeparator;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> e7b7d5b (fmting)
     constructor(address owner_, IERC20 _sellToken, ICoWSwapSettlement _settlement) {
         owner = owner_;
         sellToken = _sellToken;
@@ -53,7 +56,6 @@ contract CurvedOrderInstance is EIP1271Verifier {
 
         domainSeparator = keccak256(abi.encode(DOMAIN_TYPE_HASH, DOMAIN_NAME, DOMAIN_VERSION, chainId, address(this)));
     }
-
 
     /// @param message The signed message.
     /// @param encodedSignature The encoded signature.
@@ -87,17 +89,17 @@ contract CurvedOrderInstance is EIP1271Verifier {
     function isValidSignature(bytes32 _hash, bytes calldata _payload) external view returns (bytes4 magicValue) {
         (GPv2Order.Data memory _gpv2Order, CurvedOrder.Data memory _curvedOrder, bytes memory _curvedOrderSignature) =
             decode(_payload);
-        console.log('signature');
+        console.log("signature");
         console.logBytes(_curvedOrderSignature);
         bytes memory msg_bytes = abi.encode(_curvedOrder);
-        console.log('bytes');
+        console.log("bytes");
         console.logBytes(msg_bytes);
         bytes32 msg_hash = keccak256(abi.encode(_curvedOrder));
         console.logBytes32(msg_hash);
         address recovered_signer = this.ecdsaRecover(msg_hash, _curvedOrderSignature);
         console.log("recovered signer");
         console.log(recovered_signer);
-        require(GPv2Order.hash(_gpv2Order,domainSeparator) == _hash, "hash doesnt match gpv2order");
+        require(GPv2Order.hash(_gpv2Order, domainSeparator) == _hash, "hash doesnt match gpv2order");
         require(CurvedOrder.executionAboveCurve(_gpv2Order, _curvedOrder), "execution not above curve");
         require(recovered_signer == owner, "signature doesnt match owner");
 
