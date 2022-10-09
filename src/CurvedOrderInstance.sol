@@ -2,7 +2,6 @@
 
 pragma solidity >=0.8.0;
 
-import {console} from "./test/utils/Console.sol";
 import "./interfaces/ERC1271.sol";
 import "./libraries/CurvedOrder.sol";
 import "./libraries/GPv2Order.sol";
@@ -103,8 +102,6 @@ contract CurvedOrderInstance is EIP1271Verifier {
     function isValidSignature(bytes32 _hash, bytes calldata _payload) external view returns (bytes4 magicValue) {
         (GPv2Order.Data memory _gpv2Order, CurvedOrder.Data memory _curvedOrder, bytes memory _curvedOrderSignature) =
             decode(_payload);
-        console.log("signature");
-        console.logBytes(_curvedOrderSignature);
 
         bytes memory msg_bytes = abi.encode(
             _curvedOrder.sellToken,
@@ -121,8 +118,6 @@ contract CurvedOrderInstance is EIP1271Verifier {
         bytes memory hex_prefix = hex"19457468657265756d205369676e6564204d6573736167653a0a3332";
         msg_hash = keccak256(abi.encodePacked(hex_prefix, msg_hash));
         address recovered_signer = this.ecdsaRecover(msg_hash, _curvedOrderSignature);
-        console.log("recovered signer");
-        console.log(recovered_signer);
         require(GPv2Order.hash(_gpv2Order, domainSeparator) == _hash, "hash doesnt match gpv2order");
         require(CurvedOrder.executionAboveCurve(_gpv2Order, _curvedOrder), "execution not above curve");
         require(recovered_signer == owner, "signature doesnt match owner");
