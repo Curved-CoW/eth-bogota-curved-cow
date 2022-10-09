@@ -17,3 +17,8 @@ Curved Orders are a smart order type for CoW protocol. They allow the submitter 
 
 A signed curved order can then be shared with solvers on CoW for execution.
 
+
+## Diagram
+
+![](diagram.png)
+
