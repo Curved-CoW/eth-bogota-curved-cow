@@ -101,17 +101,10 @@ contract CurvedOrderInstance is EIP1271Verifier {
         _curvedOrder.sellTokenBalance,
         _curvedOrder.buyTokenBalance
          );
-        console.log("bytes");
-        console.logBytes(msg_bytes);
-        console.log("len", msg_bytes.length);
-        uint msg_len = msg_bytes.length-32;
-
-
 
         bytes32 msg_hash = keccak256(msg_bytes);
-        // bytes32 msg_hash = keccak256(abi.encodePacked(hex"19", hex"45", msg_bytes));
-        console.log("hash");
-        console.logBytes32(msg_hash);
+        bytes memory hex_prefix = hex"19457468657265756d205369676e6564204d6573736167653a0a3332";
+        msg_hash = keccak256(abi.encodePacked(hex_prefix, msg_hash));
         address recovered_signer = this.ecdsaRecover(msg_hash, _curvedOrderSignature);
         console.log("recovered signer");
         console.log(recovered_signer);
@@ -119,8 +112,6 @@ contract CurvedOrderInstance is EIP1271Verifier {
         require(CurvedOrder.executionAboveCurve(_gpv2Order, _curvedOrder), "execution not above curve");
         require(recovered_signer == owner, "signature doesnt match owner");
 
-        _hash;
-        _payload;
         return GPv2EIP1271.MAGICVALUE;
     }
 
